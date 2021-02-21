@@ -47,7 +47,7 @@ TSharedRef< FSlateStyleSet > FToolbarPluginStyle::Create()
 	Style->SetContentRoot(IPluginManager::Get().FindPlugin("ToolbarPlugin")->GetBaseDir() / TEXT("Resources"));
 
 	Style->Set("ToolbarPlugin.PluginAction", new IMAGE_BRUSH(TEXT("ButtonIcon_40x"), Icon40x40));
-	Style->Set("ToolbarPlugin.PluginAction2", new IMAGE_BRUSH(TEXT("ButtonIcon_40x"), Icon40x40));
+	Style->Set("ToolbarPlugin.PluginAction2", new IMAGE_BRUSH(TEXT("Packing-button"), Icon40x40));
 
 	return Style;
 }
