@@ -18,6 +18,7 @@ public:
 	
 	/** This function will be bound to Command. */
 	void PluginButtonClicked();
+	void PluginButtonClicked2();
 	
 private:
 
@@ -26,4 +27,6 @@ private:
 
 private:
 	TSharedPtr<class FUICommandList> PluginCommands;
+
+	TSharedPtr<class FUICommandList> PluginCommands2;
 };

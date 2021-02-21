@@ -26,6 +26,13 @@ void FToolbarPluginModule::StartupModule()
 		FExecuteAction::CreateRaw(this, &FToolbarPluginModule::PluginButtonClicked),
 		FCanExecuteAction());
 
+    PluginCommands2 = MakeShareable(new FUICommandList);
+
+    PluginCommands2->MapAction(
+        FToolbarPluginCommands::Get().PluginAction2,
+        FExecuteAction::CreateRaw(this, &FToolbarPluginModule::PluginButtonClicked2),
+        FCanExecuteAction());
+
 	UToolMenus::RegisterStartupCallback(FSimpleMulticastDelegate::FDelegate::CreateRaw(this, &FToolbarPluginModule::RegisterMenus));
 }
 
@@ -46,12 +53,15 @@ void FToolbarPluginModule::ShutdownModule()
 void FToolbarPluginModule::PluginButtonClicked()
 {
 	// Put your "OnButtonClicked" stuff here
-	FText DialogText = FText::Format(
-							LOCTEXT("PluginButtonDialogText", "Add code to {0} in {1} to override this button's actions"),
-							FText::FromString(TEXT("FToolbarPluginModule::PluginButtonClicked()")),
-							FText::FromString(TEXT("ToolbarPlugin.cpp"))
-					   );
+	FText DialogText = LOCTEXT("PluginButtonDialogText", "blah");
 	FMessageDialog::Open(EAppMsgType::Ok, DialogText);
+}
+
+void FToolbarPluginModule::PluginButtonClicked2()
+{
+    // Put your "OnButtonClicked" stuff here
+    FText DialogText = LOCTEXT("PluginButtonDialogText2", "blah2");
+    FMessageDialog::Open(EAppMsgType::Ok, DialogText);
 }
 
 void FToolbarPluginModule::RegisterMenus()
@@ -64,6 +74,7 @@ void FToolbarPluginModule::RegisterMenus()
 		{
 			FToolMenuSection& Section = Menu->FindOrAddSection("WindowLayout");
 			Section.AddMenuEntryWithCommandList(FToolbarPluginCommands::Get().PluginAction, PluginCommands);
+            Section.AddMenuEntryWithCommandList(FToolbarPluginCommands::Get().PluginAction2, PluginCommands2);
 		}
 	}
 
@@ -74,6 +85,9 @@ void FToolbarPluginModule::RegisterMenus()
 			{
 				FToolMenuEntry& Entry = Section.AddEntry(FToolMenuEntry::InitToolBarButton(FToolbarPluginCommands::Get().PluginAction));
 				Entry.SetCommandList(PluginCommands);
+
+                FToolMenuEntry& Entry2 = Section.AddEntry(FToolMenuEntry::InitToolBarButton(FToolbarPluginCommands::Get().PluginAction2));
+                Entry2.SetCommandList(PluginCommands2);
 			}
 		}
 	}
