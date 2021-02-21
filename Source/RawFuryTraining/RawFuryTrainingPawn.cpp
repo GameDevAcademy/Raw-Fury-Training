@@ -13,6 +13,32 @@
 #include "Kismet/GameplayStatics.h"
 #include "Sound/SoundBase.h"
 
+void ARawFuryTrainingPawn::SetMyAwesomeProperty(int32 newValue)
+{
+    UE_LOG(LogTemp, Warning, TEXT("SetMyAwesomeProperty called"));
+
+	AwesomeInt = newValue * 2;
+}
+
+int32 ARawFuryTrainingPawn::GetMyAwesomeProperty() const
+{
+	UE_LOG(LogTemp, Warning, TEXT("GetMyAwesomeProperty called"));
+
+	return AwesomeInt;
+}
+
+void ARawFuryTrainingPawn::FunctionA()
+{
+	UE_LOG(LogTemp, Warning, TEXT("FunctionA called"));
+}
+
+int32 ARawFuryTrainingPawn::FunctionB()
+{
+	UE_LOG(LogTemp, Warning, TEXT("FunctionB called"));
+
+	return 10;
+}
+
 const FName ARawFuryTrainingPawn::MoveForwardBinding("MoveForward");
 const FName ARawFuryTrainingPawn::MoveRightBinding("MoveRight");
 const FName ARawFuryTrainingPawn::FireForwardBinding("FireForward");

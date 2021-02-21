@@ -53,6 +53,46 @@ public:
 	/* Handler for the fire timer expiry */
 	void ShotTimerExpired();
 
+
+	UPROPERTY(EditAnywhere)
+	int32 MyInt1;
+
+    UPROPERTY(EditDefaultsOnly)
+	int32 MyInt2;
+
+    UPROPERTY(EditInstanceOnly)
+    int32 MyInt3;
+
+    UPROPERTY(VisibleAnywhere)
+    float MyInt4;
+
+    UPROPERTY(VisibleDefaultsOnly)
+	float MyInt5;
+
+    UPROPERTY(VisibleInstanceOnly)
+	float MyInt6;
+
+    UPROPERTY(BlueprintReadOnly)
+    bool bMyInt7;
+
+    UPROPERTY(BlueprintReadWrite)
+	bool bMyInt8;
+
+	UFUNCTION(BlueprintCallable)
+	void SetMyAwesomeProperty(int32 newValue);
+
+	UFUNCTION(BlueprintPure)
+	int32 GetMyAwesomeProperty() const;
+
+	UPROPERTY(BlueprintSetter = SetMyAwesomeProperty, BlueprintGetter = GetMyAwesomeProperty)
+	int32 AwesomeInt;
+
+	UFUNCTION(BlueprintCallable)
+	void FunctionA();
+
+	UFUNCTION(BlueprintPure)
+	int32 FunctionB();
+
 	// Static names for axis bindings
 	static const FName MoveForwardBinding;
 	static const FName MoveRightBinding;
