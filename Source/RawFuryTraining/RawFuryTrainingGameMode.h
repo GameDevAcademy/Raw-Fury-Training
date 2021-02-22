@@ -16,16 +16,19 @@ class ARawFuryTrainingGameMode : public AGameModeBase
 public:
 	ARawFuryTrainingGameMode();
 
-protected:
-    /** The default spaceship class used by players. */
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Classes)
-    TSubclassOf<ARawFuryTrainingPawn> SpaceshipClass;
-
+// AGameModeBase interface
 protected:
     virtual void BeginPlay() override;
 
+// Internal functionality
 private:
     void SpawnPlayer(const FTransform& SpawnTransform, int32 PlayerIndex);
+
+// Serialized variables
+protected:
+    /** The default spaceship class used by players. */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = RawFury)
+    TSubclassOf<ARawFuryTrainingPawn> SpaceshipClass;
 };
 
 

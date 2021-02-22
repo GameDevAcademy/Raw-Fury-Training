@@ -3,7 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "GameFramework/Character.h"
+
 #include "RawFuryTrainingPawn.generated.h"
 
 UCLASS(Blueprintable)
@@ -13,10 +15,18 @@ class ARawFuryTrainingPawn : public APawn
 public:
 	ARawFuryTrainingPawn();
 
+// APawn inteface
+protected:
+    virtual void Tick(float DeltaSeconds) override;
+    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
 // Components
 protected:
-    UPROPERTY(Category = Mesh, VisibleDefaultsOnly, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+    UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = RawFury)
     class UStaticMeshComponent* ShipMeshComponent;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = RawFury)
+    float MoveSpeed = 300.0f;
 
 };
 

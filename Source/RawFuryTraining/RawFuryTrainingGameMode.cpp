@@ -1,12 +1,12 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "RawFuryTrainingGameMode.h"
-#include "RawFuryTrainingPawn.h"
 
 #include "RawFuryTraining.h"
+#include "RawFuryTrainingPawn.h"
 
-#include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerStart.h"
+#include "Kismet/GameplayStatics.h"
 
 ARawFuryTrainingGameMode::ARawFuryTrainingGameMode()
 {
