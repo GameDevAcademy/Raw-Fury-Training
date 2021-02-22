@@ -28,6 +28,30 @@ ARawFuryTrainingPawn::ARawFuryTrainingPawn()
 
 void ARawFuryTrainingPawn::Tick(float DeltaSeconds)
 {
+    TickMovement(DeltaSeconds);
+
+    // Create fire direction vector
+    const float FireForwardValue = GetInputAxisValue(FireForwardBinding);
+    const float FireRightValue = GetInputAxisValue(FireRightBinding);
+    const FVector FireDirection = FVector(FireForwardValue, FireRightValue, 0.f);
+
+    // Try and fire a shot
+    // FireShot(FireDirection);
+}
+
+void ARawFuryTrainingPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+    check(PlayerInputComponent);
+
+    // set up gameplay key bindings
+    PlayerInputComponent->BindAxis(MoveForwardBinding);
+    PlayerInputComponent->BindAxis(MoveRightBinding);
+    PlayerInputComponent->BindAxis(FireForwardBinding);
+    PlayerInputComponent->BindAxis(FireRightBinding);
+}
+
+void ARawFuryTrainingPawn::TickMovement(float DeltaSeconds)
+{
     // Find movement direction
     const float ForwardValue = GetInputAxisValue(MoveForwardBinding);
     const float RightValue = GetInputAxisValue(MoveRightBinding);
@@ -52,23 +76,4 @@ void ARawFuryTrainingPawn::Tick(float DeltaSeconds)
             RootComponent->MoveComponent(Deflection, NewRotation, true);
         }
     }
-
-    // Create fire direction vector
-    const float FireForwardValue = GetInputAxisValue(FireForwardBinding);
-    const float FireRightValue = GetInputAxisValue(FireRightBinding);
-    const FVector FireDirection = FVector(FireForwardValue, FireRightValue, 0.f);
-
-    // Try and fire a shot
-    // FireShot(FireDirection);
-}
-
-void ARawFuryTrainingPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-    check(PlayerInputComponent);
-
-    // set up gameplay key bindings
-    PlayerInputComponent->BindAxis(MoveForwardBinding);
-    PlayerInputComponent->BindAxis(MoveRightBinding);
-    PlayerInputComponent->BindAxis(FireForwardBinding);
-    PlayerInputComponent->BindAxis(FireRightBinding);
 }

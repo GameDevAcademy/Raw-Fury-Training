@@ -20,6 +20,10 @@ protected:
     virtual void Tick(float DeltaSeconds) override;
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+// Internal functionality
+private:
+    void TickMovement(float DeltaSeconds);
+
 // Components
 protected:
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = RawFury)
