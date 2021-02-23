@@ -13,4 +13,18 @@ UCLASS()
 class ARawFuryPlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
+protected:
+	UFUNCTION(BlueprintImplementableEvent)
+	void OnPlayersConnected();
+
+    UFUNCTION(BlueprintImplementableEvent)
+	void OnPlayersInputTick();
+
+private:
+	virtual void OnPossess(APawn* aPawn) override;
+	virtual void PlayerTick(float DeltaTime);
+
+private:
+	bool IsFirstPawn(APawn* aPawn) const;
 };
