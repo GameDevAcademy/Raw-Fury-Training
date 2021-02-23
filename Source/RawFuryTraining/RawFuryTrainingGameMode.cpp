@@ -46,5 +46,7 @@ void ARawFuryTrainingGameMode::SpawnPlayer(const FTransform& SpawnTransform, int
 	// Create actor and connect control.
 	ARawFuryTrainingPawn* SpaceShipActor = GetWorld()->SpawnActor<ARawFuryTrainingPawn>(SpaceshipClass, SpawnTransform);
 	PlayerController->Possess(SpaceShipActor);
+
+	SpaceShipActor->SetControllerIndex(PlayerIndex);
 }
 

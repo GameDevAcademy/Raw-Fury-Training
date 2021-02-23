@@ -9,26 +9,6 @@
 #include "Engine/CollisionProfile.h"
 #include "Kismet/GameplayStatics.h"
 
-namespace
-{
-    struct AxisBindings
-    {
-        AxisBindings(FName InForwardAxis, FName InRightAxis)
-        {
-            MoveForwardBinding = InForwardAxis;
-            MoveRightBinding = InRightAxis;
-        }
-
-        FName MoveForwardBinding;
-        FName MoveRightBinding;
-    };
-
-    TArray<AxisBindings> PlayerInputs =
-    {
-        AxisBindings("MoveForwardL", "MoveRightL"),
-        AxisBindings("MoveForwardR", "MoveRightR")
-    };
-}
 
 ARawFuryTrainingPawn::ARawFuryTrainingPawn()
 {
@@ -40,25 +20,25 @@ ARawFuryTrainingPawn::ARawFuryTrainingPawn()
 	RootComponent = ShipMeshComponent;
 }
 
-void ARawFuryTrainingPawn::Tick(float DeltaSeconds)
+void ARawFuryTrainingPawn::UpdateInput(int32 InControllerIndex, float InX, float InY)
 {
-    TickMovement(DeltaSeconds);
+    if (InControllerIndex == ControllerIndex)
+    {
+        ControllerInput = FVector(InX, InY, 0.0f);
+    }
 }
 
-void ARawFuryTrainingPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+void ARawFuryTrainingPawn::Tick(float DeltaSeconds)
 {
-    // set up gameplay key bindings
-    for (const AxisBindings& PlayerInput : PlayerInputs)
-    {
-        PlayerInputComponent->BindAxis(PlayerInput.MoveForwardBinding);
-        PlayerInputComponent->BindAxis(PlayerInput.MoveRightBinding);
-    }
+    Super::Tick(DeltaSeconds);
+
+    TickMovement(DeltaSeconds);
 }
 
 void ARawFuryTrainingPawn::TickMovement(float DeltaSeconds)
 {
     // Clamp max size so that (X=1, Y=1) doesn't cause faster movement in diagonal directions
-    const FVector MoveDirection = GetInputByControllerId().GetClampedToMaxSize(1.0f);
+    const FVector MoveDirection = ControllerInput.GetClampedToMaxSize(1.0f);
 
     // Calculate  movement
     const FVector Movement = MoveDirection * MoveSpeed * DeltaSeconds;
