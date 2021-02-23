@@ -18,11 +18,13 @@ public:
 // APawn inteface
 protected:
     virtual void Tick(float DeltaSeconds) override;
+
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 // Internal functionality
 private:
     void TickMovement(float DeltaSeconds);
+    FVector GetInputByControllerId() const;
 
 // Components
 protected:

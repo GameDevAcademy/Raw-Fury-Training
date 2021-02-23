@@ -78,3 +78,40 @@ void ARawFuryTrainingPawn::TickMovement(float DeltaSeconds)
         }
     }
 }
+
+FVector ARawFuryTrainingPawn::GetInputByControllerId() const
+{
+    return FVector::ZeroVector;
+
+    int32 ControllerId = 0;
+    
+    FName ForwardAxis;
+    FName RightAxis;
+
+    if (ControllerId > PlayerInputs.Num())
+    {
+        UE_LOG(LogRawFuryTraining, Error, TEXT("Axis not implemented for controllerid %i"), ControllerId);
+        return FVector::ZeroVector;
+    }
+
+    ForwardAxis = PlayerInputs[ControllerId].MoveForwardBinding;
+    RightAxis = PlayerInputs[ControllerId].MoveRightBinding;
+
+    UInputComponent* LocalInputComponent = nullptr;
+
+    float ForwardValue = 0.0f;
+    float RightValue = 0.0f;
+
+    if (LocalInputComponent)
+    {
+        ForwardValue = LocalInputComponent->GetAxisKeyValue(ForwardAxis);
+        RightValue = LocalInputComponent->GetAxisKeyValue(RightAxis);
+    }
+    else
+    {
+        ForwardValue = GetInputAxisValue(ForwardAxis);
+        RightValue = GetInputAxisValue(RightAxis);
+    }
+
+    return FVector(ForwardValue, RightValue, 0.0f);
+}
