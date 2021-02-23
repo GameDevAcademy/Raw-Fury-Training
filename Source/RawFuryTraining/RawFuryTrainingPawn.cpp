@@ -24,7 +24,7 @@ void ARawFuryTrainingPawn::UpdateInput(int32 InControllerIndex, float InX, float
 {
     if (InControllerIndex == ControllerIndex)
     {
-        ControllerInput = FVector(InX, InY, 0.0f);
+        ControllerInput = FVector(InY, InX, 0.0f);
     }
 }
 
