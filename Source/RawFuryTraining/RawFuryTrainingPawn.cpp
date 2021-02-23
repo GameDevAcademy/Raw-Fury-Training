@@ -3,12 +3,18 @@
 #include "RawFuryTrainingPawn.h"
 
 #include "RawFuryTraining.h"
+#include "RawFuryPlayerController.h"
 
 #include "Components/InputComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/CollisionProfile.h"
 #include "Kismet/GameplayStatics.h"
 
+namespace
+{
+    const FName MoveForwardBinding("MoveForward");
+    const FName MoveRightBinding("MoveRight");
+}
 
 ARawFuryTrainingPawn::ARawFuryTrainingPawn()
 {
@@ -20,17 +26,36 @@ ARawFuryTrainingPawn::ARawFuryTrainingPawn()
 	RootComponent = ShipMeshComponent;
 }
 
-void ARawFuryTrainingPawn::UpdateInput(int32 InControllerIndex, float InX, float InY)
+void ARawFuryTrainingPawn::UpdateInput(float InX, float InY)
 {
-    if (InControllerIndex == ControllerIndex)
-    {
-        ControllerInput = FVector(InY, InX, 0.0f);
-    }
+    ControllerInput = FVector(InY, InX, 0.0f);
+}
+
+void ARawFuryTrainingPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+    Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+    check(PlayerInputComponent);
+
+    // set up gameplay key bindings
+    PlayerInputComponent->BindAxis(MoveForwardBinding);
+    PlayerInputComponent->BindAxis(MoveRightBinding);
 }
 
 void ARawFuryTrainingPawn::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+
+    if (ARawFuryPlayerController* PlayerController = GetController<ARawFuryPlayerController>())
+    {
+        if (PlayerController->ShouldTakeControllerInput())
+        {
+            const float ForwardValue = GetInputAxisValue(MoveForwardBinding);
+            const float RightValue = GetInputAxisValue(MoveRightBinding);
+
+            UpdateInput(RightValue, ForwardValue);
+        }
+    }
 
     TickMovement(DeltaSeconds);
 }

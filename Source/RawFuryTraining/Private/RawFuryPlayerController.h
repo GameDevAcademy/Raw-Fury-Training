@@ -14,6 +14,9 @@ class ARawFuryPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
+public:
+	bool ShouldTakeControllerInput() const;
+
 protected:
 	UFUNCTION(BlueprintImplementableEvent)
 	void OnPlayersConnected();
@@ -26,5 +29,9 @@ private:
 	virtual void PlayerTick(float DeltaTime);
 
 private:
+	void UpdateCurrentPlatform();
 	bool IsFirstPawn(APawn* aPawn) const;
+
+private:
+	bool bIsMobile;
 };

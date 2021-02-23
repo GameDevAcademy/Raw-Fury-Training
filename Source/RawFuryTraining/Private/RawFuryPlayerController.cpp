@@ -3,11 +3,18 @@
 #include "RawFuryPlayerController.h"
 #include "Kismet/GameplayStatics.h"
 
+bool ARawFuryPlayerController::ShouldTakeControllerInput() const
+{
+    return !bIsMobile;
+}
+
 void ARawFuryPlayerController::OnPossess(APawn* aPawn)
 {
     Super::OnPossess(aPawn);
 
-    if (IsFirstPawn(aPawn))
+    UpdateCurrentPlatform();
+
+    if (bIsMobile && IsFirstPawn(aPawn))
     {
         OnPlayersConnected();
     }
@@ -17,9 +24,24 @@ void ARawFuryPlayerController::PlayerTick(float DeltaTime)
 {
     Super::PlayerTick(DeltaTime);
 
-    if (IsFirstPawn(GetPawn()))
+    if (bIsMobile && IsFirstPawn(GetPawn()))
     {
         OnPlayersInputTick();
+    }
+}
+
+void ARawFuryPlayerController::UpdateCurrentPlatform()
+{
+    FString PlatformName = UGameplayStatics::GetPlatformName();
+    bool bShouldUseMouseForTouch = UGameplayStatics::GetGameInstance(GetWorld())->GetGameViewportClient()->GetUseMouseForTouch();
+
+    if (PlatformName == "Android" || PlatformName == "IOS" || bShouldUseMouseForTouch)
+    {
+        bIsMobile = true;
+    }
+    else
+    {
+        bIsMobile = false;
     }
 }
 

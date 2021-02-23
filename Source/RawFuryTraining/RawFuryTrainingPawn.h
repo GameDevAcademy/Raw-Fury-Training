@@ -16,14 +16,13 @@ public:
 	ARawFuryTrainingPawn();
 
 public:
-    void SetControllerIndex(int32 InIndex) { ControllerIndex = InIndex; }
-
     UFUNCTION(BlueprintCallable)
-    void UpdateInput(int32 InControllerIndex, float InX, float InY);
+    void UpdateInput(float InX, float InY);
 
-// APawn interface
+    // APawn interface
 protected:
     virtual void Tick(float DeltaSeconds) override;
+    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
     
 // Internal functionality
 private:
@@ -38,7 +37,6 @@ protected:
     float MoveSpeed = 300.0f;
 
 private:
-    int32 ControllerIndex = -1;
     FVector ControllerInput;
 };
 
