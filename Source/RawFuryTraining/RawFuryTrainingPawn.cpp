@@ -4,6 +4,7 @@
 
 #include "RawFuryTraining.h"
 #include "RawFuryPlayerController.h"
+#include "RawFuryBaseAbility.h"
 
 #include "Components/InputComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -42,6 +43,33 @@ void ARawFuryTrainingPawn::SetupPlayerInputComponent(UInputComponent* PlayerInpu
     PlayerInputComponent->BindAxis(MoveRightBinding);
 }
 
+void ARawFuryTrainingPawn::BeginPlay()
+{
+    Super::BeginPlay();
+
+    if (AbilityTemplate)
+    {
+        CurrentAbility = NewObject<URawFuryBaseAbility>(this, AbilityTemplate);
+
+        if (CurrentAbility)
+        {
+            CurrentAbility->InitAbility(GetWorld(), this);
+        }
+    }
+}
+
+void ARawFuryTrainingPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+    Super::EndPlay(EndPlayReason);
+
+    if (CurrentAbility)
+    {
+        CurrentAbility->StopAbility();
+    }
+
+    CurrentAbility = nullptr;
+}
+
 void ARawFuryTrainingPawn::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
@@ -66,7 +94,7 @@ void ARawFuryTrainingPawn::TickMovement(float DeltaSeconds)
     const FVector MoveDirection = ControllerInput.GetClampedToMaxSize(1.0f);
 
     // Calculate  movement
-    const FVector Movement = MoveDirection * MoveSpeed * DeltaSeconds;
+    const FVector Movement = MoveDirection * MoveSpeedMultiplyer * MoveSpeed * DeltaSeconds;
 
     // If non-zero size, move this actor
     if (Movement.SizeSquared() > 0.0f)
