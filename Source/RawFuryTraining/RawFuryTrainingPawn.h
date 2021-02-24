@@ -17,6 +17,11 @@ class ARawFuryTrainingPawn : public APawn
 public:
 	ARawFuryTrainingPawn();
 
+// Damaging
+public:
+    UFUNCTION(BlueprintCallable)
+    void DealDamage(float Damage);
+
 // Input
 public:
     UFUNCTION(BlueprintCallable)
@@ -35,6 +40,10 @@ public:
 
     UFUNCTION(BlueprintCallable)
     void StopInvulnerability() { bIsInvulnerable = false; }
+
+protected:
+    UFUNCTION(BlueprintImplementableEvent)
+    void OnHealthChanged(float NewHealthPercentage);
 
 // APawn interface
 protected:
@@ -62,11 +71,15 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = RawFury)
     float MoveSpeed = 300.0f;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = RawFury)
+    float StartHealth = 100.0f;
+
 // Internals
 private:
     FVector ControllerInput = FVector::ZeroVector;
 
     float MoveSpeedMultiplyer = 1.0f;
+    float Health = 100.0f;
     bool bIsInvulnerable = false;
 };
 

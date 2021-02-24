@@ -32,6 +32,18 @@ void ARawFuryTrainingPawn::UpdateInput(float InX, float InY)
     ControllerInput = FVector(InY, InX, 0.0f);
 }
 
+void ARawFuryTrainingPawn::DealDamage(float Damage)
+{
+    if (bIsInvulnerable)
+    {
+        return;
+    }
+
+    Health -= Damage;
+
+    OnHealthChanged(Health / StartHealth);
+}
+
 void ARawFuryTrainingPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
     Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -56,6 +68,9 @@ void ARawFuryTrainingPawn::BeginPlay()
             CurrentAbility->InitAbility(GetWorld(), this);
         }
     }
+
+    Health = StartHealth;
+    OnHealthChanged(Health / StartHealth);
 }
 
 void ARawFuryTrainingPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
