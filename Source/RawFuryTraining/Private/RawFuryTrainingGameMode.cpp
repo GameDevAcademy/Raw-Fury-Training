@@ -12,6 +12,9 @@ ARawFuryTrainingGameMode::ARawFuryTrainingGameMode()
 {
 	// set default pawn class to our character class
 	SpaceshipClass = ARawFuryTrainingPawn::StaticClass();
+
+	SetActorTickEnabled(true);
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 void ARawFuryTrainingGameMode::ChangeGameState(ERawFuryGameState::Type NewState)
@@ -58,6 +61,11 @@ void ARawFuryTrainingGameMode::Tick(float DeltaSeconds)
 
 	switch (GameState)
 	{
+		case ERawFuryGameState::None:
+		{
+
+			break;
+		}
 		case ERawFuryGameState::Start:
 		{
 			if (IsPlayingMobile())
@@ -66,6 +74,8 @@ void ARawFuryTrainingGameMode::Tick(float DeltaSeconds)
 			}
 			else
 			{
+				AssignRandomAbilities();
+
 				ChangeGameState(ERawFuryGameState::Play);
 			}
 
@@ -107,4 +117,21 @@ void ARawFuryTrainingGameMode::SpawnPlayer(const FTransform& SpawnTransform, int
 	// Create actor and connect control.
 	ARawFuryTrainingPawn* SpaceShipActor = GetWorld()->SpawnActor<ARawFuryTrainingPawn>(SpaceshipClass, SpawnTransform);
 	PlayerController->Possess(SpaceShipActor);
+
+	Players.Add(SpaceShipActor);
+}
+
+void ARawFuryTrainingGameMode::AssignRandomAbilities()
+{
+	int32 CurrentPlayerIndex = 0;
+
+	while (AllAbilities.Num() > 0)
+	{
+		int32 RandomAbilityIndex = FMath::RandRange(0, AllAbilities.Num() - 1);
+
+		Players[CurrentPlayerIndex]->AddAbility(AllAbilities[RandomAbilityIndex]);
+		AllAbilities.RemoveAt(RandomAbilityIndex);
+
+		CurrentPlayerIndex = (CurrentPlayerIndex + 1) % Players.Num();
+	}
 }

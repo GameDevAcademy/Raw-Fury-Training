@@ -7,12 +7,14 @@
 #include "RawFuryTrainingGameMode.generated.h"
 
 class ARawFuryTrainingPawn;
+class URawFuryBaseAbility;
 
 UENUM(BlueprintType)
 namespace ERawFuryGameState
 {
     enum Type
     {
+        None,
         Start,
         ChoseAbilities,
         Play,
@@ -45,6 +47,7 @@ protected:
 // Internal functionality
 private:
     void SpawnPlayer(const FTransform& SpawnTransform, int32 PlayerIndex);
+    void AssignRandomAbilities();
 
 // Serialized variables
 protected:
@@ -52,8 +55,13 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = RawFury)
     TSubclassOf<ARawFuryTrainingPawn> SpaceshipClass;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = RawFury)
+    TArray<TSubclassOf<URawFuryBaseAbility>> AllAbilities;
+
 private:
-    ERawFuryGameState::Type GameState = ERawFuryGameState::Start;
+    ERawFuryGameState::Type GameState = ERawFuryGameState::None;
+
+    TArray<ARawFuryTrainingPawn*> Players;
     bool bIsMobile = false;
 };
 
