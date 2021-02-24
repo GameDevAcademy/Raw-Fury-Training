@@ -2,6 +2,7 @@
 .vs/
 
 .qgrep/*
+Android_Multi/*
 
 # Compiled Object files
 *.slo
