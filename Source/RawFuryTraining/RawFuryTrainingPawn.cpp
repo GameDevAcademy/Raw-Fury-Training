@@ -15,6 +15,9 @@ namespace
 {
     const FName MoveForwardBinding("MoveForward");
     const FName MoveRightBinding("MoveRight");
+
+    const FName TriggerAbility0Binding("TriggerAbility0");
+    const FName TriggerAbility1Binding("TriggerAbility1");
 }
 
 ARawFuryTrainingPawn::ARawFuryTrainingPawn()
@@ -30,6 +33,35 @@ ARawFuryTrainingPawn::ARawFuryTrainingPawn()
 void ARawFuryTrainingPawn::UpdateInput(float InX, float InY)
 {
     ControllerInput = FVector(InY, InX, 0.0f);
+}
+
+void ARawFuryTrainingPawn::TriggerAbility(int32 AbilityIndex)
+{
+    if (AbilityIndex >= CurrentAbilities.Num())
+    {
+        UE_LOG(LogRawFuryTraining, Warning, TEXT("Triggering an ability with an index above the current ones."));
+        return;
+    }
+
+    if (URawFuryBaseAbility* SelectedAbility = CurrentAbilities[AbilityIndex])
+    {
+        SelectedAbility->TryTrigger(GetActorTransform(), FVector::ForwardVector * AbilityOffset);
+    }
+}
+
+void ARawFuryTrainingPawn::AddAbility(TSubclassOf<URawFuryBaseAbility> NewAbilityTemplate)
+{
+    if (NewAbilityTemplate)
+    {
+        URawFuryBaseAbility* NewAbility = NewObject<URawFuryBaseAbility>(this, NewAbilityTemplate);
+
+        if (NewAbility)
+        {
+            NewAbility->InitAbility(GetWorld(), this);
+            CurrentAbilities.Add(NewAbility);
+        }
+    }
+
 }
 
 void ARawFuryTrainingPawn::DealDamage(float Damage)
@@ -53,21 +85,16 @@ void ARawFuryTrainingPawn::SetupPlayerInputComponent(UInputComponent* PlayerInpu
     // set up gameplay key bindings
     PlayerInputComponent->BindAxis(MoveForwardBinding);
     PlayerInputComponent->BindAxis(MoveRightBinding);
+
+    DECLARE_DELEGATE_OneParam(FOnAbilityInputTrigger, int32);
+
+    PlayerInputComponent->BindAction<FOnAbilityInputTrigger>(TriggerAbility0Binding, EInputEvent::IE_Pressed, this, &ARawFuryTrainingPawn::TriggerAbility, 0);
+    PlayerInputComponent->BindAction<FOnAbilityInputTrigger>(TriggerAbility1Binding, EInputEvent::IE_Pressed, this, &ARawFuryTrainingPawn::TriggerAbility, 1);
 }
 
 void ARawFuryTrainingPawn::BeginPlay()
 {
     Super::BeginPlay();
-
-    if (AbilityTemplate)
-    {
-        CurrentAbility = NewObject<URawFuryBaseAbility>(this, AbilityTemplate);
-
-        if (CurrentAbility)
-        {
-            CurrentAbility->InitAbility(GetWorld(), this);
-        }
-    }
 
     Health = StartHealth;
     OnHealthChanged(Health / StartHealth);
@@ -77,12 +104,15 @@ void ARawFuryTrainingPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
     Super::EndPlay(EndPlayReason);
 
-    if (CurrentAbility)
+    for (const auto& AbilityPtr : CurrentAbilities)
     {
-        CurrentAbility->StopAbility();
+        if (AbilityPtr)
+        {
+            AbilityPtr->StopAbility();
+        }
     }
 
-    CurrentAbility = nullptr;
+    CurrentAbilities.Empty();
 }
 
 void ARawFuryTrainingPawn::Tick(float DeltaSeconds)

@@ -27,8 +27,14 @@ public:
     UFUNCTION(BlueprintCallable)
     void UpdateInput(float InX, float InY);
 
-// Abilities
+    UFUNCTION(BlueprintCallable)
+    void TriggerAbility(int32 AbilityIndex);
+
+// Abilities implemenation
 public:
+    UFUNCTION(BlueprintCallable)
+    void AddAbility(TSubclassOf<URawFuryBaseAbility> NewAbilityTemplate);
+
     UFUNCTION(BlueprintCallable)
     void StartSpeedMultiplyer(float ExtraSpeed) { MoveSpeedMultiplyer = ExtraSpeed; }
 
@@ -59,17 +65,17 @@ private:
 
 // Serialized
 protected:
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = RawFury)
-    TSubclassOf<URawFuryBaseAbility> AbilityTemplate;
-
     UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = RawFury)
-    URawFuryBaseAbility* CurrentAbility;
+    TArray<URawFuryBaseAbility*> CurrentAbilities;
 
     UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = RawFury)
     class UStaticMeshComponent* ShipMeshComponent;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = RawFury)
     float MoveSpeed = 300.0f;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = RawFury)
+    float AbilityOffset = 150.0f;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = RawFury)
     float StartHealth = 100.0f;
