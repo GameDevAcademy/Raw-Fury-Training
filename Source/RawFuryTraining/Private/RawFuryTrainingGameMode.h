@@ -29,7 +29,13 @@ public:
 	ARawFuryTrainingGameMode();
 
 public:
-    bool IsPlayingMobile() const { return bIsMobile; }
+    UFUNCTION(BlueprintCallable)
+    void ChangeGameState(ERawFuryGameState::Type NewState);
+
+    UFUNCTION(BlueprintImplementableEvent)
+    void OnNewGameState(ERawFuryGameState::Type NewState);
+
+    bool IsPlayingMobile() const;
 
 // AGameModeBase interface
 protected:

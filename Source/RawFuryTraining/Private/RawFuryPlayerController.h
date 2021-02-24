@@ -29,6 +29,5 @@ private:
 	virtual void PlayerTick(float DeltaTime);
 
 private:
-	void UpdateCurrentPlatform();
 	bool IsFirstPawn(APawn* aPawn) const;
 };

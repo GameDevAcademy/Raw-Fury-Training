@@ -8,7 +8,7 @@
 
 bool ARawFuryPlayerController::ShouldTakeControllerInput() const
 {
-    if (AGameModeBase* BaseGameMode = UGameplayStatics::GetGameMode())
+    if (AGameModeBase* BaseGameMode = UGameplayStatics::GetGameMode(GetWorld()))
     {
         if (ARawFuryTrainingGameMode* GameMode = Cast<ARawFuryTrainingGameMode>(BaseGameMode))
         {
@@ -23,9 +23,7 @@ void ARawFuryPlayerController::OnPossess(APawn* aPawn)
 {
     Super::OnPossess(aPawn);
 
-    UpdateCurrentPlatform();
-
-    if (bIsMobile && IsFirstPawn(aPawn))
+    if (!ShouldTakeControllerInput() && IsFirstPawn(aPawn))
     {
         OnPlayersConnected();
     }
@@ -35,24 +33,9 @@ void ARawFuryPlayerController::PlayerTick(float DeltaTime)
 {
     Super::PlayerTick(DeltaTime);
 
-    if (bIsMobile && IsFirstPawn(GetPawn()))
+    if (!ShouldTakeControllerInput() && IsFirstPawn(GetPawn()))
     {
         OnPlayersInputTick();
-    }
-}
-
-void ARawFuryPlayerController::UpdateCurrentPlatform()
-{
-    FString PlatformName = UGameplayStatics::GetPlatformName();
-    bool bShouldUseMouseForTouch = UGameplayStatics::GetGameInstance(GetWorld())->GetGameViewportClient()->GetUseMouseForTouch();
-
-    if (PlatformName == "Android" || PlatformName == "IOS" || bShouldUseMouseForTouch)
-    {
-        bIsMobile = true;
-    }
-    else
-    {
-        bIsMobile = false;
     }
 }
 

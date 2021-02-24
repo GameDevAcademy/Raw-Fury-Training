@@ -14,10 +14,32 @@ ARawFuryTrainingGameMode::ARawFuryTrainingGameMode()
 	SpaceshipClass = ARawFuryTrainingPawn::StaticClass();
 }
 
+void ARawFuryTrainingGameMode::ChangeGameState(ERawFuryGameState::Type NewState)
+{
+	GameState = NewState;
+
+	OnNewGameState(GameState);
+}
+
+bool ARawFuryTrainingGameMode::IsPlayingMobile() const
+{
+    FString PlatformName = UGameplayStatics::GetPlatformName();
+    bool bShouldUseMouseForTouch = UGameplayStatics::GetGameInstance(GetWorld())->GetGameViewportClient()->GetUseMouseForTouch();
+
+    if (PlatformName == "Android" || PlatformName == "IOS" || bShouldUseMouseForTouch)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 void ARawFuryTrainingGameMode::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
     TArray<AActor*> SpawnLocations;
     UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), SpawnLocations);
 
@@ -26,6 +48,8 @@ void ARawFuryTrainingGameMode::BeginPlay()
 		const FTransform& SpawnTransform = SpawnLocations[SpawnIndex]->GetTransform();
 		SpawnPlayer(SpawnTransform, SpawnIndex);
 	}
+
+	GameState = ERawFuryGameState::Start;
 }
 
 void ARawFuryTrainingGameMode::Tick(float DeltaSeconds)
@@ -36,6 +60,14 @@ void ARawFuryTrainingGameMode::Tick(float DeltaSeconds)
 	{
 		case ERawFuryGameState::Start:
 		{
+			if (IsPlayingMobile())
+			{
+				ChangeGameState(ERawFuryGameState::ChoseAbilities);
+			}
+			else
+			{
+				ChangeGameState(ERawFuryGameState::Play);
+			}
 
 			break;
 		}
@@ -76,4 +108,3 @@ void ARawFuryTrainingGameMode::SpawnPlayer(const FTransform& SpawnTransform, int
 	ARawFuryTrainingPawn* SpaceShipActor = GetWorld()->SpawnActor<ARawFuryTrainingPawn>(SpaceshipClass, SpawnTransform);
 	PlayerController->Possess(SpaceShipActor);
 }
-
