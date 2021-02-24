@@ -31,7 +31,4 @@ private:
 private:
 	void UpdateCurrentPlatform();
 	bool IsFirstPawn(APawn* aPawn) const;
-
-private:
-	bool bIsMobile;
 };

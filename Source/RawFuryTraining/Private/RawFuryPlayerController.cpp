@@ -1,11 +1,22 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "RawFuryPlayerController.h"
+
+#include "RawFuryTrainingGameMode.h"
+
 #include "Kismet/GameplayStatics.h"
 
 bool ARawFuryPlayerController::ShouldTakeControllerInput() const
 {
-    return !bIsMobile;
+    if (AGameModeBase* BaseGameMode = UGameplayStatics::GetGameMode())
+    {
+        if (ARawFuryTrainingGameMode* GameMode = Cast<ARawFuryTrainingGameMode>(BaseGameMode))
+        {
+            return !GameMode->IsPlayingMobile();
+        }
+    }
+
+    return true;
 }
 
 void ARawFuryPlayerController::OnPossess(APawn* aPawn)

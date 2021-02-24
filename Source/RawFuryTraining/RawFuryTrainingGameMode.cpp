@@ -28,6 +28,35 @@ void ARawFuryTrainingGameMode::BeginPlay()
 	}
 }
 
+void ARawFuryTrainingGameMode::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+
+	switch (GameState)
+	{
+		case ERawFuryGameState::Start:
+		{
+
+			break;
+		}
+		case ERawFuryGameState::ChoseAbilities:
+		{
+
+			break;
+		}
+		case ERawFuryGameState::Play:
+		{
+
+			break;
+		}
+		case ERawFuryGameState::Finish:
+		{
+
+			break;
+		}
+	}
+}
+
 void ARawFuryTrainingGameMode::SpawnPlayer(const FTransform& SpawnTransform, int32 PlayerIndex)
 {
 	if (SpaceshipClass == nullptr)

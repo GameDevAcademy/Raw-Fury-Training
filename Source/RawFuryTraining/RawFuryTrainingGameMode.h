@@ -8,6 +8,18 @@
 
 class ARawFuryTrainingPawn;
 
+UENUM(BlueprintType)
+namespace ERawFuryGameState
+{
+    enum Type
+    {
+        Start,
+        ChoseAbilities,
+        Play,
+        Finish
+    };
+}
+
 UCLASS(MinimalAPI)
 class ARawFuryTrainingGameMode : public AGameModeBase
 {
@@ -16,9 +28,13 @@ class ARawFuryTrainingGameMode : public AGameModeBase
 public:
 	ARawFuryTrainingGameMode();
 
+public:
+    bool IsPlayingMobile() const { return bIsMobile; }
+
 // AGameModeBase interface
 protected:
     virtual void BeginPlay() override;
+    virtual void Tick(float DeltaSeconds) override;
 
 // Internal functionality
 private:
@@ -29,6 +45,10 @@ protected:
     /** The default spaceship class used by players. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = RawFury)
     TSubclassOf<ARawFuryTrainingPawn> SpaceshipClass;
+
+private:
+    ERawFuryGameState::Type GameState = ERawFuryGameState::Start;
+    bool bIsMobile = false;
 };
 
 
