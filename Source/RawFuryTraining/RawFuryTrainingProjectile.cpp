@@ -1,11 +1,15 @@
 // Copyright Epic Games, Inc. All Rights Reserve
 
 #include "RawFuryTrainingProjectile.h"
+
+#include "RawFuryTrainingPawn.h"
+
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Engine/StaticMesh.h"
+#include "Kismet/GameplayStatics.h"
 
 ARawFuryTrainingProjectile::ARawFuryTrainingProjectile() 
 {
@@ -27,4 +31,22 @@ ARawFuryTrainingProjectile::ARawFuryTrainingProjectile()
 
 	// Die after 3 seconds by default
 	InitialLifeSpan = 3.0f;
+
+	if (UPrimitiveComponent* PrimComponent = Cast<UPrimitiveComponent>(GetRootComponent()))
+	{
+		PrimComponent->OnComponentHit.AddDynamic(this, &ARawFuryTrainingProjectile::OnHitCallback);
+	}
+}
+
+void ARawFuryTrainingProjectile::OnHitCallback(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if (OtherActor)
+	{
+		UGameplayStatics::ApplyDamage(OtherActor, ProjectileDamage, nullptr, this, UDamageType::StaticClass());
+
+		FVector HitActorLocation = OtherActor->GetActorLocation() + ParticlesSpawnOffset;
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ParticlesEmitter, HitActorLocation, GetActorRotation());
+	}
+
+	Destroy();
 }

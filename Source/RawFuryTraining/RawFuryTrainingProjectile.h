@@ -14,6 +14,14 @@ class ARawFuryTrainingProjectile : public AActor
 {
 	GENERATED_BODY()
 
+public:
+	ARawFuryTrainingProjectile();
+
+protected:
+    UFUNCTION()
+    void OnHitCallback(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+protected:
 	/** Sphere collision component */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Projectile, meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* ProjectileMesh;
@@ -22,12 +30,13 @@ class ARawFuryTrainingProjectile : public AActor
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	UProjectileMovementComponent* ProjectileMovement;
 
-public:
-	ARawFuryTrainingProjectile();
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = RawFury)
+	float ProjectileDamage = 10.0f;
 
-	/** Returns ProjectileMesh subobject **/
-	FORCEINLINE UStaticMeshComponent* GetProjectileMesh() const { return ProjectileMesh; }
-	/** Returns ProjectileMovement subobject **/
-	FORCEINLINE UProjectileMovementComponent* GetProjectileMovement() const { return ProjectileMovement; }
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = RawFury)
+    FVector ParticlesSpawnOffset = FVector(0.0f, 0.0f, 10.0f);
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = RawFury)
+	UParticleSystem* ParticlesEmitter = nullptr;
 };
 
