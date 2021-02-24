@@ -53,7 +53,6 @@ float ARawFuryTrainingPawn::GetAbilityCooldown(int32 AbilityIndex) const
 {
     if (AbilityIndex >= CurrentAbilities.Num())
     {
-        UE_LOG(LogRawFuryTraining, Warning, TEXT("Triggering an ability with an index above the current ones."));
         return -1.0f;
     }
 
