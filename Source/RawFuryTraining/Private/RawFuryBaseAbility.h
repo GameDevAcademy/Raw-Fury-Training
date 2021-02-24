@@ -33,6 +33,7 @@ public:
 	void StopAbility();
 
 	bool IsOnCoolDown() const;
+	float GetCoolDownPercentage() const;
 
 private:
 	virtual class UWorld* GetWorld() const { return OwnerWorld; }

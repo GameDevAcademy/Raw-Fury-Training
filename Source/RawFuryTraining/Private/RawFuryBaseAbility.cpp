@@ -21,6 +21,8 @@ bool URawFuryBaseAbility::TryTrigger(const FTransform& CurrentTransform, FVector
 {
     if (!IsOnCoolDown())
     {
+        LastTriggerTime = UGameplayStatics::GetTimeSeconds(GetWorld());
+
         OnAbilityTriggered(CurrentTransform, TargetPosition);
 
         if (EffectDuration > 0.0f)
@@ -50,12 +52,30 @@ void URawFuryBaseAbility::TryFinish()
 
     bIsEffectActive = false;
 
-    LastTriggerTime = UGameplayStatics::GetTimeSeconds(GetWorld()) + CoolDownDuration;
-
     OnAbilityDelepted();
 }
 
 bool URawFuryBaseAbility::IsOnCoolDown() const
 {
-    return bIsEffectActive || (UGameplayStatics::GetTimeSeconds(GetWorld()) < LastTriggerTime);
+    return GetCoolDownPercentage() < 1.0f;
+}
+
+float URawFuryBaseAbility::GetCoolDownPercentage() const
+{
+    // Ability was never triggered, it means it's ready
+    if (LastTriggerTime < 0.0f)
+    {
+        return 1.0f;
+    }
+
+    // Ability is currently active, it didn't start cooldown yet
+    if (bIsEffectActive)
+    {
+        return 0.0f;
+    }
+
+    float TimeNow = UGameplayStatics::GetTimeSeconds(GetWorld());
+
+    float ElapsedTime = TimeNow - LastTriggerTime;
+    return ElapsedTime / CoolDownDuration;
 }

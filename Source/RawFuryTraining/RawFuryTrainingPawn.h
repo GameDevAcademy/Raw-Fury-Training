@@ -30,6 +30,9 @@ public:
     UFUNCTION(BlueprintCallable)
     void TriggerAbility(int32 AbilityIndex);
 
+    UFUNCTION(BlueprintCallable)
+    float GetAbilityCooldown(int32 AbilityIndex) const;
+
 // Abilities implemenation
 public:
     UFUNCTION(BlueprintCallable)

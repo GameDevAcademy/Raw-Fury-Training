@@ -49,6 +49,22 @@ void ARawFuryTrainingPawn::TriggerAbility(int32 AbilityIndex)
     }
 }
 
+float ARawFuryTrainingPawn::GetAbilityCooldown(int32 AbilityIndex) const
+{
+    if (AbilityIndex >= CurrentAbilities.Num())
+    {
+        UE_LOG(LogRawFuryTraining, Warning, TEXT("Triggering an ability with an index above the current ones."));
+        return -1.0f;
+    }
+
+    if (URawFuryBaseAbility* SelectedAbility = CurrentAbilities[AbilityIndex])
+    {
+        return SelectedAbility->GetCoolDownPercentage();
+    }
+
+    return -1.0f;
+}
+
 void ARawFuryTrainingPawn::AddAbility(TSubclassOf<URawFuryBaseAbility> NewAbilityTemplate)
 {
     if (NewAbilityTemplate)
