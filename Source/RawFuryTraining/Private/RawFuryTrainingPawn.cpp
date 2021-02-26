@@ -64,7 +64,7 @@ float ARawFuryTrainingPawn::GetAbilityCooldown(int32 AbilityIndex) const
     return -1.0f;
 }
 
-void ARawFuryTrainingPawn::AddAbility(TSubclassOf<URawFuryBaseAbility> NewAbilityTemplate)
+void ARawFuryTrainingPawn::AddAbility(TSubclassOf<URawFuryBaseAbility> NewAbilityTemplate, int32 NewIndex)
 {
     if (NewAbilityTemplate)
     {
@@ -73,7 +73,7 @@ void ARawFuryTrainingPawn::AddAbility(TSubclassOf<URawFuryBaseAbility> NewAbilit
         if (NewAbility)
         {
             NewAbility->InitAbility(GetWorld(), this);
-            CurrentAbilities.Add(NewAbility);
+            CurrentAbilities.Insert(NewAbility, NewIndex);
         }
     }
 

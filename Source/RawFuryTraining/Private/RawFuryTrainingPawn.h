@@ -36,7 +36,7 @@ public:
 // Abilities implemenation
 public:
     UFUNCTION(BlueprintCallable)
-    void AddAbility(TSubclassOf<URawFuryBaseAbility> NewAbilityTemplate);
+    void AddAbility(TSubclassOf<URawFuryBaseAbility> NewAbilityTemplate, int32 NewIndex = 0);
 
     UFUNCTION(BlueprintCallable)
     void StartSpeedMultiplyer(float ExtraSpeed) { MoveSpeedMultiplyer = ExtraSpeed; }
