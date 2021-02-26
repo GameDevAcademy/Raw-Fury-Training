@@ -48,6 +48,9 @@ protected:
 	UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = RawFury)
 	ARawFuryTrainingPawn* PlayerPawn = nullptr;
 
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = RawFury)
+	UTexture2D* Texture = nullptr;
+
 private:
 	float LastTriggerTime = -1.0f;
 
