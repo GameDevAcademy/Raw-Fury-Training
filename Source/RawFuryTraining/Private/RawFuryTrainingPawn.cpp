@@ -73,7 +73,16 @@ void ARawFuryTrainingPawn::AddAbility(TSubclassOf<URawFuryBaseAbility> NewAbilit
         if (NewAbility)
         {
             NewAbility->InitAbility(GetWorld(), this);
-            CurrentAbilities.Insert(NewAbility, NewIndex);
+
+            if (NewIndex < CurrentAbilities.Num())
+            {
+                CurrentAbilities.Insert(NewAbility, NewIndex);
+            }
+            else
+            {
+                CurrentAbilities.Emplace(NewAbility);
+            }
+
         }
     }
 
