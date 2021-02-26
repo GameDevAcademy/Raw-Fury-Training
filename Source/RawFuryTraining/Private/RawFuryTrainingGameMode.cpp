@@ -52,7 +52,7 @@ void ARawFuryTrainingGameMode::BeginPlay()
 		SpawnPlayer(SpawnTransform, SpawnIndex);
 	}
 
-	GameState = ERawFuryGameState::Start;
+	ChangeGameState(ERawFuryGameState::Start);
 }
 
 void ARawFuryTrainingGameMode::Tick(float DeltaSeconds)
