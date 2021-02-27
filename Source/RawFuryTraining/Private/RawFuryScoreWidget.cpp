@@ -8,6 +8,9 @@
 
 void SRawFuryScoreWidget::Construct(const FArguments& InArgs)
 {
+    static const FTextBlockStyle ScoreTextStyle = FTextBlockStyle(FCoreStyle::Get().GetWidgetStyle<FTextBlockStyle>("NormalText"))
+        .SetFontSize(100);
+
     ChildSlot
         [
             SNew(SHorizontalBox)
@@ -21,6 +24,7 @@ void SRawFuryScoreWidget::Construct(const FArguments& InArgs)
                 SNew(STextBlock)
                 .Text(LOCTEXT("TextName", "TextName"))
                 .Justification(ETextJustify::Center)
+                .TextStyle(&ScoreTextStyle)
             ]
 
             +SHorizontalBox::Slot()

@@ -56,7 +56,7 @@ void ARawFuryTrainingGameMode::BeginPlay()
 	ChangeGameState(ERawFuryGameState::Start);
 
     GEngine->GameViewport->AddViewportWidgetContent(
-        SNew(SRawFuryScoreWidget)
+        SNew(SRawFuryScoreWidget), 100
     );
 }
 
