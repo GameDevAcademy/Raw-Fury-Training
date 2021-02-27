@@ -42,6 +42,8 @@ public:
     UFUNCTION(BlueprintCallable)
     void DealDamage(float Damage);
 
+    bool IsDead() const;
+
 // Input
 public:
     UFUNCTION(BlueprintCallable)

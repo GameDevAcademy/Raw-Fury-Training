@@ -4,6 +4,7 @@
 
 #include "RawFuryTraining.h"
 #include "RawFuryTrainingPawn.h"
+#include "RawFuryScoreWidget.h"
 
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
@@ -53,6 +54,10 @@ void ARawFuryTrainingGameMode::BeginPlay()
 	}
 
 	ChangeGameState(ERawFuryGameState::Start);
+
+    GEngine->GameViewport->AddViewportWidgetContent(
+        SNew(SRawFuryScoreWidget)
+    );
 }
 
 void ARawFuryTrainingGameMode::Tick(float DeltaSeconds)
@@ -88,6 +93,13 @@ void ARawFuryTrainingGameMode::Tick(float DeltaSeconds)
 		}
 		case ERawFuryGameState::Play:
 		{
+			for (const auto& Player : Players)
+			{
+				if (Player->IsDead())
+				{
+					ChangeGameState(ERawFuryGameState::Finish);
+				}
+			}
 
 			break;
 		}
