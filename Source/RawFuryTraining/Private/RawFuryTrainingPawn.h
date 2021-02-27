@@ -9,6 +9,26 @@
 #include "RawFuryTrainingPawn.generated.h"
 
 class URawFuryBaseAbility;
+class UParticleSystem;
+
+USTRUCT(BlueprintType)
+struct FDamageFeedback
+{
+    GENERATED_USTRUCT_BODY();
+
+public:
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    float TriggerHealthPercentage = 0.5f;
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    UParticleSystem* EmitterTemplate;
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    int32 MaterialIndex = -1;
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+    UMaterial* MaterialOverride;
+};
 
 UCLASS(Blueprintable)
 class ARawFuryTrainingPawn : public APawn
@@ -54,6 +74,9 @@ protected:
     UFUNCTION(BlueprintImplementableEvent)
     void OnHealthChanged(float NewHealthPercentage);
 
+    UFUNCTION(BlueprintImplementableEvent)
+    void OnDamageFeedbackChanged(const FDamageFeedback& NewDamageFeedback);
+
 // APawn interface
 protected:
     virtual void BeginPlay() override;
@@ -70,25 +93,29 @@ private:
 protected:
     UPROPERTY(BlueprintReadOnly, VisibleAnywhere, Category = RawFury)
     TArray<URawFuryBaseAbility*> CurrentAbilities;
+    
+    UPROPERTY(BlueprintReadOnly, EditAnywhere, Category = RawFury)
+    TArray<FDamageFeedback> DamageFeedbacks;
 
-    UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = RawFury)
+    UPROPERTY(BlueprintReadOnly, VisibleDefaultsOnly, Category = RawFury)
     class UStaticMeshComponent* ShipMeshComponent;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = RawFury)
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = RawFury)
     float MoveSpeed = 300.0f;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = RawFury)
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = RawFury)
     float AbilityOffset = 150.0f;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = RawFury)
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = RawFury)
     float StartHealth = 100.0f;
 
 // Internals
 private:
     FVector ControllerInput = FVector::ZeroVector;
 
-    float MoveSpeedMultiplyer = 1.0f;
     float Health = 100.0f;
     bool bIsInvulnerable = false;
+    float MoveSpeedMultiplyer = 1.0f;
+    int32 DamageFeedbackIndex = -1;
 };
 

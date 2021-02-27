@@ -35,8 +35,5 @@ protected:
 
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = RawFury)
     FVector ParticlesSpawnOffset = FVector(0.0f, 0.0f, 10.0f);
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = RawFury)
-	UParticleSystem* ParticlesEmitter = nullptr;
 };
 

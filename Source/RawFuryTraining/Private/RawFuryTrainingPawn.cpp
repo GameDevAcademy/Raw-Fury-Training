@@ -85,7 +85,6 @@ void ARawFuryTrainingPawn::AddAbility(TSubclassOf<URawFuryBaseAbility> NewAbilit
 
         }
     }
-
 }
 
 void ARawFuryTrainingPawn::DealDamage(float Damage)
@@ -97,7 +96,17 @@ void ARawFuryTrainingPawn::DealDamage(float Damage)
 
     Health -= Damage;
 
-    OnHealthChanged(Health / StartHealth);
+    float CurrentPercentage = Health / StartHealth;
+    OnHealthChanged(CurrentPercentage);
+
+    for (int32 i = 0; i < DamageFeedbacks.Num(); i++)
+    {
+        if (DamageFeedbacks[i].TriggerHealthPercentage > CurrentPercentage && i > DamageFeedbackIndex)
+        {
+            OnDamageFeedbackChanged(DamageFeedbacks[i]);
+            DamageFeedbackIndex = i;
+        }
+    }
 }
 
 void ARawFuryTrainingPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -122,6 +131,11 @@ void ARawFuryTrainingPawn::BeginPlay()
 
     Health = StartHealth;
     OnHealthChanged(Health / StartHealth);
+
+    DamageFeedbacks.Sort([](const FDamageFeedback& A, const FDamageFeedback& B) 
+        {
+            return A.TriggerHealthPercentage > B.TriggerHealthPercentage;
+        });
 }
 
 void ARawFuryTrainingPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)

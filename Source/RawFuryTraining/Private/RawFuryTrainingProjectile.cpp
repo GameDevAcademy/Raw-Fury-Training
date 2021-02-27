@@ -43,9 +43,6 @@ void ARawFuryTrainingProjectile::OnHitCallback(UPrimitiveComponent* HitComp, AAc
 	if (OtherActor)
 	{
 		UGameplayStatics::ApplyDamage(OtherActor, ProjectileDamage, nullptr, this, UDamageType::StaticClass());
-
-		FVector HitActorLocation = OtherActor->GetActorLocation() + ParticlesSpawnOffset;
-		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), ParticlesEmitter, HitActorLocation, GetActorRotation());
 	}
 
 	Destroy();
