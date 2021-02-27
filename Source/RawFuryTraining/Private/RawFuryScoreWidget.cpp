@@ -10,8 +10,23 @@ void SRawFuryScoreWidget::Construct(const FArguments& InArgs)
 {
     ChildSlot
         [
-            SNew(STextBlock)
-            .Text(LOCTEXT("TextName", "TextName"))
+            SNew(SHorizontalBox)
+            +SHorizontalBox::Slot()
+            [
+                SNew(SSpacer)
+            ]
+
+            +SHorizontalBox::Slot()
+            [
+                SNew(STextBlock)
+                .Text(LOCTEXT("TextName", "TextName"))
+                .Justification(ETextJustify::Center)
+            ]
+
+            +SHorizontalBox::Slot()
+            [
+                SNew(SSpacer)
+            ]
         ];
 }
 #undef LOCTEXT_NAMESPACE
