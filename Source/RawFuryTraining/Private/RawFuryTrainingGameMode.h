@@ -8,6 +8,7 @@
 
 class ARawFuryTrainingPawn;
 class URawFuryBaseAbility;
+class SRawFuryScoreWidget;
 
 UENUM(BlueprintType)
 namespace ERawFuryGameState
@@ -62,7 +63,11 @@ private:
     ERawFuryGameState::Type GameState = ERawFuryGameState::None;
 
     TArray<ARawFuryTrainingPawn*> Players;
+    TSharedPtr<SRawFuryScoreWidget> ScoreWidget;
+
     bool bIsMobile = false;
+
+
 };
 
 

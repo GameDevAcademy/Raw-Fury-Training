@@ -13,4 +13,9 @@ public:
     SLATE_END_ARGS()
 
     void Construct(const FArguments& InArgs);
+
+    void SetWidgetText(FText Message);
+
+private:
+    TSharedPtr<STextBlock> TextWidget;
 };

@@ -9,6 +9,8 @@
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
 
+#define LOCTEXT_NAMESPACE "RawFuryTraining"
+
 ARawFuryTrainingGameMode::ARawFuryTrainingGameMode()
 {
 	// set default pawn class to our character class
@@ -23,6 +25,26 @@ void ARawFuryTrainingGameMode::ChangeGameState(ERawFuryGameState::Type NewState)
 	GameState = NewState;
 
 	OnNewGameState(GameState);
+
+	switch (GameState)
+	{
+	case ERawFuryGameState::None:
+		ScoreWidget->SetWidgetText(LOCTEXT("None", "None"));
+		break;
+	case ERawFuryGameState::Start:
+		ScoreWidget->SetWidgetText(LOCTEXT("Prepare", "Prepare!"));
+		break;
+	case ERawFuryGameState::ChoseAbilities:
+        ScoreWidget->SetWidgetText(LOCTEXT("ChoseYourAbilities", "Chose your abilities!"));
+		break;
+	case ERawFuryGameState::Play:
+        ScoreWidget->SetWidgetText(LOCTEXT("KillYourOpponent", "Kill your opponent!"));
+		break;
+	case ERawFuryGameState::Finish:
+        ScoreWidget->SetWidgetText(LOCTEXT("GameOver", "Game Over"));
+		break;
+
+	}
 }
 
 bool ARawFuryTrainingGameMode::IsPlayingMobile() const
@@ -53,11 +75,11 @@ void ARawFuryTrainingGameMode::BeginPlay()
 		SpawnPlayer(SpawnTransform, SpawnIndex);
 	}
 
-	ChangeGameState(ERawFuryGameState::Start);
-
     GEngine->GameViewport->AddViewportWidgetContent(
-        SNew(SRawFuryScoreWidget), 100
+        SAssignNew(ScoreWidget, SRawFuryScoreWidget), 100
     );
+
+	ChangeGameState(ERawFuryGameState::Start);
 }
 
 void ARawFuryTrainingGameMode::Tick(float DeltaSeconds)
@@ -147,3 +169,5 @@ void ARawFuryTrainingGameMode::AssignRandomAbilities()
 		CurrentPlayerIndex = (CurrentPlayerIndex + 1) % Players.Num();
 	}
 }
+
+#undef LOCTEXT_NAMESPACE

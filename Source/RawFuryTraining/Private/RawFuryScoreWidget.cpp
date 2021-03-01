@@ -4,12 +4,10 @@
 
 #include "Widgets/Layout/SSpacer.h"
 
-#define LOCTEXT_NAMESPACE "RawFuryTraining"
-
 void SRawFuryScoreWidget::Construct(const FArguments& InArgs)
 {
     static const FTextBlockStyle ScoreTextStyle = FTextBlockStyle(FCoreStyle::Get().GetWidgetStyle<FTextBlockStyle>("NormalText"))
-        .SetFontSize(100);
+        .SetFontSize(50);
 
     ChildSlot
         [
@@ -21,8 +19,7 @@ void SRawFuryScoreWidget::Construct(const FArguments& InArgs)
 
             +SHorizontalBox::Slot()
             [
-                SNew(STextBlock)
-                .Text(LOCTEXT("TextName", "TextName"))
+                SAssignNew(TextWidget, STextBlock)
                 .Justification(ETextJustify::Center)
                 .TextStyle(&ScoreTextStyle)
             ]
@@ -32,5 +29,11 @@ void SRawFuryScoreWidget::Construct(const FArguments& InArgs)
                 SNew(SSpacer)
             ]
         ];
+
+    SetVisibility(EVisibility::HitTestInvisible);
 }
-#undef LOCTEXT_NAMESPACE
+
+void SRawFuryScoreWidget::SetWidgetText(FText Message)
+{
+    TextWidget->SetText(Message);
+}

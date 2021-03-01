@@ -111,7 +111,7 @@ void ARawFuryTrainingPawn::DealDamage(float Damage)
 
 bool ARawFuryTrainingPawn::IsDead() const
 {
-    return Health <= 0.0f;
+    return Health < 0.0f;
 }
 
 void ARawFuryTrainingPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
