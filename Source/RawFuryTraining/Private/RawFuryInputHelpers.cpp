@@ -13,9 +13,9 @@ void URawFuryInputHelpers::UpdateInputAction(FName ActionName, const FInputChord
 
     for (const FInputActionKeyMapping& Mapping : OutMappings)
     {
-        InputSettings->RemoveActionMapping(Mapping);
+        InputSettings->RemoveActionMapping(Mapping, false);
     }
 
     FInputActionKeyMapping NewInput(ActionName, Input.Key, Input.bShift, Input.bCtrl, Input.bAlt, Input.bCmd);
-    InputSettings->AddActionMapping(NewInput);
+    InputSettings->AddActionMapping(NewInput, true);
 }
