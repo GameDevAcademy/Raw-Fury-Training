@@ -41,7 +41,7 @@ void ARawFuryTrainingGameMode::ChangeGameState(ERawFuryGameState::Type NewState)
         ScoreWidget->SetWidgetText(LOCTEXT("KillYourOpponent", "Kill your opponent!"));
 		break;
 	case ERawFuryGameState::Finish:
-        ScoreWidget->SetWidgetText(LOCTEXT("GameOver", "Game Over"));
+        ScoreWidget->SetWidgetText(LOCTEXT("GameOver", "Game Over!"));
 		break;
 
 	}
