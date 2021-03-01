@@ -87,6 +87,17 @@ void ARawFuryTrainingPawn::AddAbility(TSubclassOf<URawFuryBaseAbility> NewAbilit
     }
 }
 
+UTexture2D* ARawFuryTrainingPawn::GetAbilityImage(int32 Index /*= 0*/)
+{
+    if (CurrentAbilities.Num() <= Index)
+    {
+        UE_LOG(LogRawFuryTraining, Warning, TEXT("Getting the image from an ability with an index above the current ones."));
+        return nullptr;
+    }
+
+    return CurrentAbilities[Index]->Texture;
+}
+
 void ARawFuryTrainingPawn::DealDamage(float Damage)
 {
     if (bIsInvulnerable)

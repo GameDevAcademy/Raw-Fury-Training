@@ -79,6 +79,11 @@ void ARawFuryTrainingGameMode::BeginPlay()
         SAssignNew(ScoreWidget, SRawFuryScoreWidget), 100
     );
 
+	if (!IsPlayingMobile())
+	{
+        AssignRandomAbilities();
+	}
+
 	ChangeGameState(ERawFuryGameState::Start);
 }
 
@@ -101,8 +106,6 @@ void ARawFuryTrainingGameMode::Tick(float DeltaSeconds)
 			}
 			else
 			{
-				AssignRandomAbilities();
-
 				ChangeGameState(ERawFuryGameState::Play);
 			}
 

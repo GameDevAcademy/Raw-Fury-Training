@@ -61,6 +61,9 @@ public:
     void AddAbility(TSubclassOf<URawFuryBaseAbility> NewAbilityTemplate, int32 NewIndex = 0);
 
     UFUNCTION(BlueprintCallable)
+    UTexture2D* GetAbilityImage(int32 Index = 0);
+
+    UFUNCTION(BlueprintCallable)
     void StartSpeedMultiplyer(float ExtraSpeed) { MoveSpeedMultiplyer = ExtraSpeed; }
 
     UFUNCTION(BlueprintCallable)

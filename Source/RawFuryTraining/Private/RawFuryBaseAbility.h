@@ -38,7 +38,7 @@ public:
 private:
 	virtual class UWorld* GetWorld() const { return OwnerWorld; }
 
-protected:
+public:
 	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = RawFury)
 	float CoolDownDuration = 5.0f;
 
