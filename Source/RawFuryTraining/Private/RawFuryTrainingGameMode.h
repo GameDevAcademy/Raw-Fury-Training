@@ -38,6 +38,7 @@ public:
     UFUNCTION(BlueprintImplementableEvent)
     void OnNewGameState(ERawFuryGameState::Type NewState);
 
+    UFUNCTION(BlueprintCallable)
     bool IsPlayingMobile() const;
 
 // AGameModeBase interface
