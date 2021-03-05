@@ -23,6 +23,17 @@ namespace ERawFuryGameState
     };
 }
 
+
+UCLASS(BlueprintType, EditInlineNew)
+class URawFuryWidgetInfo : public UObject
+{
+    GENERATED_BODY()
+
+public:
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Custom Object")
+    bool bShouldShow = true;
+};
+
 UCLASS(MinimalAPI)
 class ARawFuryTrainingGameMode : public AGameModeBase
 {
@@ -59,6 +70,9 @@ protected:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = RawFury)
     TArray<TSubclassOf<URawFuryBaseAbility>> AllAbilities;
+
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Instanced, Category = RawFury)
+    URawFuryWidgetInfo* RawFuryWidgetInfo;
 
 private:
     ERawFuryGameState::Type GameState = ERawFuryGameState::None;
