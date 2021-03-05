@@ -1,4 +1,4 @@
-// GameDev Academy 2021 - RawFury Training v1.0
+// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "RawFuryPlayerController.h"
 

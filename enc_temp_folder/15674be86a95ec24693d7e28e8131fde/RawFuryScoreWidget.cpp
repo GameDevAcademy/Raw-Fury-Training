@@ -1,4 +1,4 @@
-// GameDev Academy 2021 - RawFury Training v1.0
+// Copyright Out-of-the-Box Plugins 2018-2020. All Rights Reserved.
 
 #include "RawFuryScoreWidget.h"
 

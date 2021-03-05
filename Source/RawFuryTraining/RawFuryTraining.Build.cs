@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// GameDev Academy 2021 - RawFury Training v1.0
 
 using UnrealBuildTool;
 

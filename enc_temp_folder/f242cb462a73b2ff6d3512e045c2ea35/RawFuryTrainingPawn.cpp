@@ -1,4 +1,4 @@
-// GameDev Academy 2021 - RawFury Training v1.0
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "RawFuryTrainingPawn.h"
 
