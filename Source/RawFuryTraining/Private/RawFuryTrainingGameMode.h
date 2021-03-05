@@ -81,8 +81,6 @@ private:
     TSharedPtr<SRawFuryScoreWidget> ScoreWidget;
 
     bool bIsMobile = false;
-
-
 };
 
 
