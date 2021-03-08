@@ -23,6 +23,18 @@ namespace ERawFuryGameState
     };
 }
 
+USTRUCT(BlueprintType)
+struct FAsteroidSpawnInfo
+{
+    GENERATED_USTRUCT_BODY();
+
+public:
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+        int32 AsteroidsToSpawn = 100;
+
+    UPROPERTY(BlueprintReadWrite, EditAnywhere)
+        TSubclassOf<AActor> AsteroidClassToSpawn;
+};
 
 UCLASS(BlueprintType, EditInlineNew)
 class URawFuryWidgetInfo : public UObject
@@ -73,6 +85,9 @@ protected:
 
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Instanced, Category = RawFury)
     URawFuryWidgetInfo* RawFuryWidgetInfo;
+    
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = RawFury)
+    FAsteroidSpawnInfo AsteroidSpawnInfo;
 
 private:
     ERawFuryGameState::Type GameState = ERawFuryGameState::None;
