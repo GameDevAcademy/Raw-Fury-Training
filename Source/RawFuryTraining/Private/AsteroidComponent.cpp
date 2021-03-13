@@ -27,6 +27,8 @@ void UAsteroidComponent::BeginPlay()
 // Called every frame
 void UAsteroidComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
+    SCOPED_NAMED_EVENT_TEXT("UAsteroidComponent::TickComponent", FColor::Orange);
+
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
     TimePassed += DeltaTime;
@@ -41,7 +43,11 @@ void UAsteroidComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 void UAsteroidComponent::StartAsteroid()
 {
+    SCOPED_NAMED_EVENT_TEXT("UAsteroidComponent::StartAsteroid", FColor::Purple);
+
     UE_LOG(LogTemp, Warning, TEXT("My asteroid is started."));
+
+    FPlatformProcess::Sleep(0.5f);
 
     float RandomX = FMath::FRandRange(-100.0f, 100.0f);
     float RandomY = FMath::FRandRange(-100.0f, 100.0f);
