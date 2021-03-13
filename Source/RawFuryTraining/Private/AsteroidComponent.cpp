@@ -47,7 +47,7 @@ void UAsteroidComponent::StartAsteroid()
 
     UE_LOG(LogTemp, Warning, TEXT("My asteroid is started."));
 
-    FPlatformProcess::Sleep(0.5f);
+    //FPlatformProcess::Sleep(0.5f);
 
     float RandomX = FMath::FRandRange(-100.0f, 100.0f);
     float RandomY = FMath::FRandRange(-100.0f, 100.0f);
