@@ -11,6 +11,30 @@
 #include "Engine/CollisionProfile.h"
 #include "Kismet/GameplayStatics.h"
 
+class EnemyAI
+{
+    float detectionRange;
+    float detectionAngle;
+
+    bool CanDetectPlayer(FVector PlayerPos, FVector EnemyPos)
+    {
+        // FMath
+        // UKismetMathLibrary
+        // FGenericPlatformMath
+
+        float distanceToPlayer = 0.0f; //?
+        float angleToPlayer = 0.0f; // ?
+
+        if (distanceToPlayer > detectionRange)
+            return false;
+        if (angleToPlayer > detectionAngle)
+            return false;
+
+        return true;
+    }
+};
+
+
 namespace
 {
     const FName MoveForwardBinding("MoveForward");
@@ -141,6 +165,11 @@ void ARawFuryTrainingPawn::SetupPlayerInputComponent(UInputComponent* PlayerInpu
     PlayerInputComponent->BindAction<FOnAbilityInputTrigger>(TriggerAbility1Binding, EInputEvent::IE_Pressed, this, &ARawFuryTrainingPawn::TriggerAbility, 1);
 }
 
+void ARawFuryTrainingPawn::OnActorOverlapTrigged(AActor* OverlappedActor, AActor* OtherActor)
+{
+
+}
+
 void ARawFuryTrainingPawn::BeginPlay()
 {
     Super::BeginPlay();
@@ -152,6 +181,8 @@ void ARawFuryTrainingPawn::BeginPlay()
         {
             return A.TriggerHealthPercentage > B.TriggerHealthPercentage;
         });
+
+    OnActorBeginOverlap.AddDynamic(this, &ARawFuryTrainingPawn::OnActorOverlapTrigged);
 }
 
 void ARawFuryTrainingPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -171,6 +202,15 @@ void ARawFuryTrainingPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void ARawFuryTrainingPawn::Tick(float DeltaSeconds)
 {
+    FramesSinceLastUpdate++;
+
+    int32 UpdateEveryFrames = 10;
+
+    if (FramesSinceLastUpdate % UpdateEveryFrames != 0)
+    {
+        return;
+    }
+
     Super::Tick(DeltaSeconds);
 
     if (ARawFuryPlayerController* PlayerController = GetController<ARawFuryPlayerController>())

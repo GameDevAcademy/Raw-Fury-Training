@@ -46,6 +46,8 @@ public:
     bool bShouldShow = true;
 };
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSomethingHappend, bool, bIsThisNew);
+
 UCLASS(MinimalAPI)
 class ARawFuryTrainingGameMode : public AGameModeBase
 {
@@ -64,6 +66,9 @@ public:
     UFUNCTION(BlueprintCallable)
     bool IsPlayingMobile() const;
 
+    UPROPERTY(BlueprintAssignable, Category = RawFury)
+    FOnSomethingHappend OnSomethingHappened;
+
 // AGameModeBase interface
 protected:
     virtual void BeginPlay() override;
@@ -71,6 +76,7 @@ protected:
 
 // Internal functionality
 private:
+    void LogClassInfo();
     void SpawnPlayer(const FTransform& SpawnTransform, int32 PlayerIndex);
     void AssignRandomAbilities();
 

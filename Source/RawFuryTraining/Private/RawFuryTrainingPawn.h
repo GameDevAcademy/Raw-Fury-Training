@@ -55,7 +55,7 @@ public:
     UFUNCTION(BlueprintCallable)
     float GetAbilityCooldown(int32 AbilityIndex) const;
 
-// Abilities implemenation
+// Abilities implementation
 public:
     UFUNCTION(BlueprintCallable)
     void AddAbility(TSubclassOf<URawFuryBaseAbility> NewAbilityTemplate, int32 NewIndex = 0);
@@ -81,6 +81,9 @@ protected:
 
     UFUNCTION(BlueprintImplementableEvent)
     void OnDamageFeedbackChanged(const FDamageFeedback& NewDamageFeedback);
+
+    UFUNCTION()
+    void OnActorOverlapTrigged(AActor* OverlappedActor, AActor* OtherActor);
 
 // APawn interface
 protected:
@@ -122,5 +125,7 @@ private:
     bool bIsInvulnerable = false;
     float MoveSpeedMultiplyer = 1.0f;
     int32 DamageFeedbackIndex = -1;
+
+    int32 FramesSinceLastUpdate = 0;
 };
 

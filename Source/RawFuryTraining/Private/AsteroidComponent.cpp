@@ -4,6 +4,9 @@
 #include "AsteroidComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 
+#include "Kismet/GameplayStatics.h"
+#include "RawFuryTrainingGameMode.h"
+
 // Sets default values for this component's properties
 UAsteroidComponent::UAsteroidComponent()
 {
@@ -14,15 +17,33 @@ UAsteroidComponent::UAsteroidComponent()
     // ...
 }
 
-
 // Called when the game starts
 void UAsteroidComponent::BeginPlay()
 {
     Super::BeginPlay();
 
     UE_LOG(LogTemp, Warning, TEXT("My asteroid is alive."));
+
+    AGameModeBase* CurrentGameMode = UGameplayStatics::GetGameMode(GetWorld());
+    if (ARawFuryTrainingGameMode* RawFuryGameMode = Cast<ARawFuryTrainingGameMode>(CurrentGameMode))
+    {
+        RawFuryGameMode->OnSomethingHappened.AddDynamic(this, &UAsteroidComponent::OnSomethingHappendFunction);
+    }
+
+    StateFlags |= static_cast<uint8>(EAsteroidStateFlags::Spawned);
 }
 
+void UAsteroidComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+    Super::EndPlay(EndPlayReason);
+    
+    StateFlags &= ~static_cast<uint8>(EAsteroidStateFlags::Spawned);
+}
+
+void UAsteroidComponent::OnSomethingHappendFunction(bool info)
+{
+    //UE_LOG(LogTemp, Warning, TEXT("UAsteroidComponent::OnSomethingHappendFunction"));
+}
 
 // Called every frame
 void UAsteroidComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -41,6 +62,11 @@ void UAsteroidComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
     }
 }
 
+float UAsteroidComponent::GetPercentageLeft() const
+{
+    return TimePassed / ChangeInterval;
+}
+
 void UAsteroidComponent::StartAsteroid()
 {
     SCOPED_NAMED_EVENT_TEXT("UAsteroidComponent::StartAsteroid", FColor::Purple);
@@ -54,4 +80,9 @@ void UAsteroidComponent::StartAsteroid()
 
     UProjectileMovementComponent* Projectile = GetOwner()->FindComponentByClass<UProjectileMovementComponent>();
     Projectile->Velocity = FVector(RandomX, RandomY, 0);
+
+    if (StateFlags & static_cast<uint8>(EAsteroidStateFlags::Spawned))
+    {
+        StateFlags |= static_cast<uint8>(EAsteroidStateFlags::ChangedDirection);
+    }
 }
