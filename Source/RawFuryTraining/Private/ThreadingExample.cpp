@@ -7,6 +7,8 @@ ThreadingExample::ThreadingExample(int32 MaxPrimeNumber)
 
 void ThreadingExample::DoWork()
 {
+    SCOPED_NAMED_EVENT_TEXT("ThreadingExample::DoWork", FColor::Purple);
+
     int32 PrimeNumberCount = 1;
     for (int32 i = 1; i <= UpperLimit; i++)
     {

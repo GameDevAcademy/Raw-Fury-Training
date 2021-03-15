@@ -90,7 +90,8 @@ float ARawFuryTrainingPawn::GetAbilityCooldown(int32 AbilityIndex) const
 
 void ARawFuryTrainingPawn::StartCalculatingPrimeNumbers(bool bRunAsync)
 {
-    FAutoDeleteAsyncTask<ThreadingExample>* ThreadingTask = new FAutoDeleteAsyncTask<ThreadingExample>(50000);
+    SCOPED_NAMED_EVENT_TEXT("ARawFuryTrainingPawn::StartCalculatingPrimeNumbers", FColor::Purple);
+    FAutoDeleteAsyncTask<ThreadingExample>* ThreadingTask = new FAutoDeleteAsyncTask<ThreadingExample>(500000);
 
     if (bRunAsync)
     {
