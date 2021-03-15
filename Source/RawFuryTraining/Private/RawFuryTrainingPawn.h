@@ -55,6 +55,9 @@ public:
     UFUNCTION(BlueprintCallable)
     float GetAbilityCooldown(int32 AbilityIndex) const;
 
+    UFUNCTION(BlueprintCallable)
+    void StartCalculatingPrimeNumbers(bool bRunAsync);
+
 // Abilities implementation
 public:
     UFUNCTION(BlueprintCallable)

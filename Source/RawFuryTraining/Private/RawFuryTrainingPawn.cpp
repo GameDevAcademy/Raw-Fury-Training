@@ -10,6 +10,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Engine/CollisionProfile.h"
 #include "Kismet/GameplayStatics.h"
+#include "ThreadingExample.h"
 
 class EnemyAI
 {
@@ -33,7 +34,6 @@ class EnemyAI
         return true;
     }
 };
-
 
 namespace
 {
@@ -86,6 +86,20 @@ float ARawFuryTrainingPawn::GetAbilityCooldown(int32 AbilityIndex) const
     }
 
     return -1.0f;
+}
+
+void ARawFuryTrainingPawn::StartCalculatingPrimeNumbers(bool bRunAsync)
+{
+    FAutoDeleteAsyncTask<ThreadingExample>* ThreadingTask = new FAutoDeleteAsyncTask<ThreadingExample>(50000);
+
+    if (bRunAsync)
+    {
+        ThreadingTask->StartBackgroundTask();
+    }
+    else
+    {
+        ThreadingTask->StartSynchronousTask();
+    }
 }
 
 void ARawFuryTrainingPawn::AddAbility(TSubclassOf<URawFuryBaseAbility> NewAbilityTemplate, int32 NewIndex)
@@ -202,10 +216,9 @@ void ARawFuryTrainingPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void ARawFuryTrainingPawn::Tick(float DeltaSeconds)
 {
-    FramesSinceLastUpdate++;
-
     int32 UpdateEveryFrames = 10;
 
+    FramesSinceLastUpdate++;
     if (FramesSinceLastUpdate % UpdateEveryFrames != 0)
     {
         return;
