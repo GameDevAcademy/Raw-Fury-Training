@@ -145,7 +145,8 @@ void ARawFuryTrainingGameMode::BeginPlay()
 		FVector SpawnLocation = FVector(RandomX, RandomY, 0.0f);
 		FRotator SpawnRotation = FRotator::ZeroRotator;
 
-		AActor* AsteroidActor = GetWorld()->SpawnActor<AActor>(AsteroidSpawnInfo.AsteroidClassToSpawn, SpawnLocation, SpawnRotation);
+		UWorld* CurrentWorld = GetWorld();
+		AActor* AsteroidActor = CurrentWorld->SpawnActor<AActor>(AsteroidSpawnInfo.AsteroidClassToSpawn, SpawnLocation, SpawnRotation);
 	}
 
 	LogClassInfo();
