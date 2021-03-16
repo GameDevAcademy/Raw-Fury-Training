@@ -85,9 +85,6 @@ protected:
     UFUNCTION(BlueprintImplementableEvent)
     void OnDamageFeedbackChanged(const FDamageFeedback& NewDamageFeedback);
 
-    UFUNCTION()
-    void OnActorOverlapTrigged(AActor* OverlappedActor, AActor* OtherActor);
-
 // APawn interface
 protected:
     virtual void BeginPlay() override;

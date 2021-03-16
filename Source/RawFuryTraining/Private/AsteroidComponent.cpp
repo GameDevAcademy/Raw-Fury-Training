@@ -42,7 +42,7 @@ void UAsteroidComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 
 void UAsteroidComponent::OnSomethingHappendFunction(bool info)
 {
-    //UE_LOG(LogTemp, Warning, TEXT("UAsteroidComponent::OnSomethingHappendFunction"));
+    UE_LOG(LogTemp, Warning, TEXT("UAsteroidComponent::OnSomethingHappendFunction"));
 }
 
 // Called every frame

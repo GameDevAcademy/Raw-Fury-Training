@@ -149,14 +149,14 @@ void ARawFuryTrainingGameMode::BeginPlay()
 		AActor* AsteroidActor = CurrentWorld->SpawnActor<AActor>(AsteroidSpawnInfo.AsteroidClassToSpawn, SpawnLocation, SpawnRotation);
 	}
 
-	LogClassInfo();
+	//LogClassInfo();
 }
 
 void ARawFuryTrainingGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-    OnSomethingHappened.Broadcast(true);
+    //OnSomethingHappened.Broadcast(true);
 
 	switch (GameState)
 	{

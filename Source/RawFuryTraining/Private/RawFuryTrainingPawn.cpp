@@ -181,11 +181,6 @@ void ARawFuryTrainingPawn::SetupPlayerInputComponent(UInputComponent* PlayerInpu
     PlayerInputComponent->BindAction<FOnAbilityInputTrigger>(TriggerAbility1Binding, EInputEvent::IE_Pressed, this, &ARawFuryTrainingPawn::TriggerAbility, 1);
 }
 
-void ARawFuryTrainingPawn::OnActorOverlapTrigged(AActor* OverlappedActor, AActor* OtherActor)
-{
-
-}
-
 void ARawFuryTrainingPawn::BeginPlay()
 {
     Super::BeginPlay();
@@ -197,8 +192,6 @@ void ARawFuryTrainingPawn::BeginPlay()
         {
             return A.TriggerHealthPercentage > B.TriggerHealthPercentage;
         });
-
-    OnActorBeginOverlap.AddDynamic(this, &ARawFuryTrainingPawn::OnActorOverlapTrigged);
 }
 
 void ARawFuryTrainingPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
