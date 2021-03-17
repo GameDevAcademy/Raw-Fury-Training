@@ -43,22 +43,22 @@ public:
 
 void ARawFuryTrainingGameMode::LogClassInfo()
 {
-	size_t PowerPointExampleClassSize = sizeof PowerPointExampleClass;
+	size_t PowerPointExampleClassSize = sizeof (PowerPointExampleClass);
 	UE_LOG(LogTemp, Warning, TEXT("PowerPointExampleClass - %llu bytes"), PowerPointExampleClassSize);
 
-	size_t EmptyClassSize = sizeof EmptyClass;
+	size_t EmptyClassSize = sizeof (EmptyClass);
     UE_LOG(LogTemp, Warning, TEXT("EmptyClass - %llu bytes"), EmptyClassSize);
 
-	size_t FirstDerivedClassSize = sizeof FirstDerivedClass;
+	size_t FirstDerivedClassSize = sizeof (FirstDerivedClass);
     UE_LOG(LogTemp, Warning, TEXT("FirstDerivedClass - %llu bytes"), FirstDerivedClassSize);
 
-	size_t SecondDerivedClassSize = sizeof SecondDerivedClass;
+	size_t SecondDerivedClassSize = sizeof (SecondDerivedClass);
     UE_LOG(LogTemp, Warning, TEXT("SecondDerivedClass - %llu bytes"), SecondDerivedClassSize);
 
-    size_t ARawFuryTrainingGameModeSize = sizeof ARawFuryTrainingGameMode;
+    size_t ARawFuryTrainingGameModeSize = sizeof (ARawFuryTrainingGameMode);
     UE_LOG(LogTemp, Warning, TEXT("ARawFuryTrainingGameMode - %llu bytes"), ARawFuryTrainingGameModeSize);
 
-    size_t MorePropertiesGameModeSize = sizeof MorePropertiesGameMode;
+    size_t MorePropertiesGameModeSize = sizeof (MorePropertiesGameMode);
     UE_LOG(LogTemp, Warning, TEXT("MorePropertiesGameMode - %llu bytes"), MorePropertiesGameModeSize);
 }
 
