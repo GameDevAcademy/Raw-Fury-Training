@@ -2,6 +2,7 @@
 
 ThreadingExample::ThreadingExample(int32 MaxPrimeNumber)
 {
+    // Pass the information from the constructor arguments to this instance's variables.
     UpperLimit = MaxPrimeNumber;
 }
 
@@ -32,4 +33,3 @@ void ThreadingExample::DoWork()
 
     UE_LOG(LogTemp, Warning, TEXT("TASK DONE!"));
 }
-

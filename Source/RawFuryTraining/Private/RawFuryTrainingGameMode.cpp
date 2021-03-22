@@ -11,60 +11,6 @@
 
 #define LOCTEXT_NAMESPACE "RawFuryTraining"
 
-class EmptyClass
-{
-    int32 A;
-};
-
-class FirstDerivedClass : EmptyClass
-{
-    int32 B;
-};
-
-class SecondDerivedClass : FirstDerivedClass
-{
-    bool D;
-};
-
-class PowerPointExampleClass
-{
-	int16 A;
-	int16 B;
-	uint8 C;
-};
-
-class MorePropertiesGameMode : ARawFuryTrainingGameMode
-{
-public:
-	int32 A;
-	float B;
-	int32 C;
-};
-
-void ARawFuryTrainingGameMode::LogClassInfo()
-{
-	size_t PowerPointExampleClassSize = sizeof (PowerPointExampleClass);
-	UE_LOG(LogTemp, Warning, TEXT("PowerPointExampleClass - %llu bytes"), PowerPointExampleClassSize);
-
-	size_t EmptyClassSize = sizeof (EmptyClass);
-    UE_LOG(LogTemp, Warning, TEXT("EmptyClass - %llu bytes"), EmptyClassSize);
-
-	size_t FirstDerivedClassSize = sizeof (FirstDerivedClass);
-    UE_LOG(LogTemp, Warning, TEXT("FirstDerivedClass - %llu bytes"), FirstDerivedClassSize);
-
-	size_t SecondDerivedClassSize = sizeof (SecondDerivedClass);
-    UE_LOG(LogTemp, Warning, TEXT("SecondDerivedClass - %llu bytes"), SecondDerivedClassSize);
-
-    size_t ARawFuryTrainingGameModeSize = sizeof (ARawFuryTrainingGameMode);
-    UE_LOG(LogTemp, Warning, TEXT("ARawFuryTrainingGameMode - %llu bytes"), ARawFuryTrainingGameModeSize);
-
-    size_t MorePropertiesGameModeSize = sizeof (MorePropertiesGameMode);
-    UE_LOG(LogTemp, Warning, TEXT("MorePropertiesGameMode - %llu bytes"), MorePropertiesGameModeSize);
-
-	int32 iNumberOfLifes = 9;
-	FVector vLocation = FVector::ZeroVector;
-}
-
 ARawFuryTrainingGameMode::ARawFuryTrainingGameMode()
 {
 	// set default pawn class to our character class
@@ -146,26 +92,17 @@ void ARawFuryTrainingGameMode::BeginPlay()
         float RandomY = FMath::FRandRange(-1000.0f, 1000.0f);
 
 		FVector SpawnLocation = FVector(RandomX, RandomY, 0.0f);
-		SpawnLocation.Normalize();
-
-		SpawnLocation *= 1000.f;
-
-
 		FRotator SpawnRotation = FRotator::ZeroRotator;
 
 		UWorld* CurrentWorld = GetWorld();
 		AActor* AsteroidActor = CurrentWorld->SpawnActor<AActor>(AsteroidSpawnInfo.AsteroidClassToSpawn, SpawnLocation, SpawnRotation);
 		AsteroidPool.Add(AsteroidActor);
 	}
-
-	//LogClassInfo();
 }
 
 void ARawFuryTrainingGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-
-    //OnSomethingHappened.Broadcast(true);
 
 	switch (GameState)
 	{
@@ -246,20 +183,6 @@ void ARawFuryTrainingGameMode::AssignRandomAbilities()
 
 		CurrentPlayerIndex = (CurrentPlayerIndex + 1) % Players.Num();
 	}
-}
-
-AActor* ARawFuryTrainingGameMode::SpawnAsteroid()
-{
-	AActor* AsteroidToSpawn = AsteroidPool.Pop();
-	AsteroidToSpawn->SetActorLocation(FVector(1, 1, 1));
-
-	return AsteroidToSpawn;
-}
-
-void ARawFuryTrainingGameMode::ReturnAsteroid(AActor* AsteroidToReturn)
-{
-	AsteroidToReturn->SetActorLocation(FVector(0, 0, 0));
-	AsteroidPool.Add(AsteroidToReturn);
 }
 
 #undef LOCTEXT_NAMESPACE

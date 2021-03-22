@@ -36,18 +36,6 @@ public:
         TSubclassOf<AActor> AsteroidClassToSpawn;
 };
 
-UCLASS(BlueprintType, EditInlineNew)
-class URawFuryWidgetInfo : public UObject
-{
-    GENERATED_BODY()
-
-public:
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "My Custom Object")
-    bool bShouldShow = true;
-};
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSomethingHappend, bool, bIsThisNew);
-
 UCLASS(MinimalAPI)
 class ARawFuryTrainingGameMode : public AGameModeBase
 {
@@ -66,9 +54,6 @@ public:
     UFUNCTION(BlueprintCallable)
     bool IsPlayingMobile() const;
 
-    UPROPERTY(BlueprintAssignable, Category = RawFury)
-    FOnSomethingHappend OnSomethingHappened;
-
 // AGameModeBase interface
 protected:
     virtual void BeginPlay() override;
@@ -76,7 +61,6 @@ protected:
 
 // Internal functionality
 private:
-    void LogClassInfo();
     void SpawnPlayer(const FTransform& SpawnTransform, int32 PlayerIndex);
     void AssignRandomAbilities();
 
@@ -89,16 +73,10 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = RawFury)
     TArray<TSubclassOf<URawFuryBaseAbility>> AllAbilities;
 
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Instanced, Category = RawFury)
-    URawFuryWidgetInfo* RawFuryWidgetInfo;
-    
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = RawFury)
     FAsteroidSpawnInfo AsteroidSpawnInfo;
 
-public:
-    AActor* SpawnAsteroid();
-    void ReturnAsteroid(AActor* AsteroidToReturn);
-
+private:
     TArray<AActor*> AsteroidPool;
 
 private:
@@ -106,7 +84,6 @@ private:
 
     TArray<ARawFuryTrainingPawn*> Players;
     TSharedPtr<SRawFuryScoreWidget> ScoreWidget;
-
 
     bool bIsMobile = false;
 };

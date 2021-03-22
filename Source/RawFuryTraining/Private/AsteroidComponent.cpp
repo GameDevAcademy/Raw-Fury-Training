@@ -7,6 +7,10 @@
 #include "Kismet/GameplayStatics.h"
 #include "RawFuryTrainingGameMode.h"
 
+#define TEST_BIT(Bitmask, Bit) 	(((Bitmask) & (1 << static_cast<uint32>(Bit))) > 0)
+#define SET_BIT(Bitmask, Bit) 	(Bitmask |= 1 << static_cast<uint32>(Bit))
+#define CLEAR_BIT(Bitmask, Bit) 	(Bitmask &= ~(1 << static_cast<uint32>(Bit)))
+
 // Sets default values for this component's properties
 UAsteroidComponent::UAsteroidComponent()
 {
@@ -24,13 +28,7 @@ void UAsteroidComponent::BeginPlay()
 
     UE_LOG(LogTemp, Warning, TEXT("My asteroid is alive."));
 
-    AGameModeBase* CurrentGameMode = UGameplayStatics::GetGameMode(GetWorld());
-    if (ARawFuryTrainingGameMode* RawFuryGameMode = Cast<ARawFuryTrainingGameMode>(CurrentGameMode))
-    {
-        RawFuryGameMode->OnSomethingHappened.AddDynamic(this, &UAsteroidComponent::OnSomethingHappendFunction);
-    }
-
-    StateFlags |= static_cast<uint8>(EAsteroidStateFlags::Spawned);
+    SET_BIT(AsteroidFlags, EAsteroidFlags::WasAsteroidSpawned);
 
     USphereComponent* SphereCollider = GetOwner()->FindComponentByClass<USphereComponent>();
     SphereCollider->OnComponentBeginOverlap.AddDynamic(this, &UAsteroidComponent::OnComponentOverlapBegin);
@@ -39,8 +37,8 @@ void UAsteroidComponent::BeginPlay()
 void UAsteroidComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
     Super::EndPlay(EndPlayReason);
-    
-    StateFlags &= ~static_cast<uint8>(EAsteroidStateFlags::Spawned);
+
+    SET_BIT(AsteroidFlags, EAsteroidFlags::WasAsteroidDestroyed);
 }
 
 void UAsteroidComponent::OnSomethingHappendFunction(bool info)
@@ -50,26 +48,13 @@ void UAsteroidComponent::OnSomethingHappendFunction(bool info)
 
 void UAsteroidComponent::OnComponentOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-    /*GetOwner()->Destroy();*/
-    AGameModeBase* CurrentGameMode = UGameplayStatics::GetGameMode(GetWorld());
-    if (ARawFuryTrainingGameMode* RawFuryGameMode = Cast<ARawFuryTrainingGameMode>(CurrentGameMode))
-    {
-        RawFuryGameMode->ReturnAsteroid(GetOwner());
-    }
+    GetOwner()->Destroy();
 }
 
 // Called every frame
 void UAsteroidComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
     Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-    const int UpdateEveryFrames = 10;
-
-    if (FramesSinceLastUpdate % UpdateEveryFrames != 0) // 1, 2, ... 9
-    {
-        TotalDeltaTime += DeltaTime;
-        return;
-    }
 
     SCOPED_NAMED_EVENT_TEXT("UAsteroidComponent::TickComponent", FColor::Orange);
 
@@ -106,9 +91,9 @@ void UAsteroidComponent::StartAsteroid()
 
     UProjectileMovementComponent* Projectile = GetOwner()->FindComponentByClass<UProjectileMovementComponent>();
     Projectile->Velocity = FVector(RandomX, RandomY, 0);
-
-    if (StateFlags & static_cast<uint8>(EAsteroidStateFlags::Spawned))
+    
+    if (!TEST_BIT(AsteroidFlags, EAsteroidFlags::WasAsteroidTicked))
     {
-        StateFlags |= static_cast<uint8>(EAsteroidStateFlags::ChangedDirection);
+        SET_BIT(AsteroidFlags, EAsteroidFlags::WasAsteroidTicked);
     }
 }

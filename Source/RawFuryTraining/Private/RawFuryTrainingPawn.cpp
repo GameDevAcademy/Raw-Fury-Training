@@ -12,29 +12,6 @@
 #include "Kismet/GameplayStatics.h"
 #include "ThreadingExample.h"
 
-class EnemyAI
-{
-    float detectionRange;
-    float detectionAngle;
-
-    bool CanDetectPlayer(FVector PlayerPos, FVector EnemyPos)
-    {
-        // FMath
-        // UKismetMathLibrary
-        // FGenericPlatformMath
-
-        float distanceToPlayer = 0.0f; //?
-        float angleToPlayer = 0.0f; // ?
-
-        if (distanceToPlayer > detectionRange)
-            return false;
-        if (angleToPlayer > detectionAngle)
-            return false;
-
-        return true;
-    }
-};
-
 namespace
 {
     const FName MoveForwardBinding("MoveForward");
@@ -131,7 +108,6 @@ UTexture2D* ARawFuryTrainingPawn::GetAbilityImage(int32 Index /*= 0*/)
 {
     if (CurrentAbilities.Num() <= Index)
     {
-        UE_LOG(LogRawFuryTraining, Warning, TEXT("Getting the image from an ability with an index above the current ones."));
         return nullptr;
     }
 
