@@ -95,11 +95,18 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = RawFury)
     FAsteroidSpawnInfo AsteroidSpawnInfo;
 
+public:
+    AActor* SpawnAsteroid();
+    void ReturnAsteroid(AActor* AsteroidToReturn);
+
+    TArray<AActor*> AsteroidPool;
+
 private:
     ERawFuryGameState::Type GameState = ERawFuryGameState::None;
 
     TArray<ARawFuryTrainingPawn*> Players;
     TSharedPtr<SRawFuryScoreWidget> ScoreWidget;
+
 
     bool bIsMobile = false;
 };

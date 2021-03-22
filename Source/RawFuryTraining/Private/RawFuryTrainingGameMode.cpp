@@ -60,6 +60,9 @@ void ARawFuryTrainingGameMode::LogClassInfo()
 
     size_t MorePropertiesGameModeSize = sizeof (MorePropertiesGameMode);
     UE_LOG(LogTemp, Warning, TEXT("MorePropertiesGameMode - %llu bytes"), MorePropertiesGameModeSize);
+
+	int32 iNumberOfLifes = 9;
+	FVector vLocation = FVector::ZeroVector;
 }
 
 ARawFuryTrainingGameMode::ARawFuryTrainingGameMode()
@@ -143,10 +146,16 @@ void ARawFuryTrainingGameMode::BeginPlay()
         float RandomY = FMath::FRandRange(-1000.0f, 1000.0f);
 
 		FVector SpawnLocation = FVector(RandomX, RandomY, 0.0f);
+		SpawnLocation.Normalize();
+
+		SpawnLocation *= 1000.f;
+
+
 		FRotator SpawnRotation = FRotator::ZeroRotator;
 
 		UWorld* CurrentWorld = GetWorld();
 		AActor* AsteroidActor = CurrentWorld->SpawnActor<AActor>(AsteroidSpawnInfo.AsteroidClassToSpawn, SpawnLocation, SpawnRotation);
+		AsteroidPool.Add(AsteroidActor);
 	}
 
 	//LogClassInfo();
@@ -237,6 +246,20 @@ void ARawFuryTrainingGameMode::AssignRandomAbilities()
 
 		CurrentPlayerIndex = (CurrentPlayerIndex + 1) % Players.Num();
 	}
+}
+
+AActor* ARawFuryTrainingGameMode::SpawnAsteroid()
+{
+	AActor* AsteroidToSpawn = AsteroidPool.Pop();
+	AsteroidToSpawn->SetActorLocation(FVector(1, 1, 1));
+
+	return AsteroidToSpawn;
+}
+
+void ARawFuryTrainingGameMode::ReturnAsteroid(AActor* AsteroidToReturn)
+{
+	AsteroidToReturn->SetActorLocation(FVector(0, 0, 0));
+	AsteroidPool.Add(AsteroidToReturn);
 }
 
 #undef LOCTEXT_NAMESPACE
