@@ -8,6 +8,7 @@
 
 #include "GameFramework/PlayerStart.h"
 #include "Kismet/GameplayStatics.h"
+#include "ThreadingExample.h"
 
 #define LOCTEXT_NAMESPACE "RawFuryTraining"
 
@@ -86,23 +87,30 @@ void ARawFuryTrainingGameMode::BeginPlay()
 
 	ChangeGameState(ERawFuryGameState::Start);
 
-	for (int32 i = 0; i < AsteroidSpawnInfo.AsteroidsToSpawn; i++)
-	{
-        float RandomX = FMath::FRandRange(-1000.0f, 1000.0f);
-        float RandomY = FMath::FRandRange(-1000.0f, 1000.0f);
+    for (int32 i = 0; i < AsteroidSpawnInfo.AsteroidsToSpawn; i++)
+    {
+        EnlargePool();
+    }
 
-		FVector SpawnLocation = FVector(RandomX, RandomY, 0.0f);
-		FRotator SpawnRotation = FRotator::ZeroRotator;
-
-		UWorld* CurrentWorld = GetWorld();
-		AActor* AsteroidActor = CurrentWorld->SpawnActor<AActor>(AsteroidSpawnInfo.AsteroidClassToSpawn, SpawnLocation, SpawnRotation);
-		AsteroidPool.Add(AsteroidActor);
-	}
+    FAutoDeleteAsyncTask<ThreadingExample>* ThreadingTask = new FAutoDeleteAsyncTask<ThreadingExample>(500000, SpawnIntervals);
+    ThreadingTask->StartBackgroundTask();
 }
 
 void ARawFuryTrainingGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+
+	if (SpawnIntervals.Num())
+	{
+        TimePassed += DeltaSeconds;
+
+        if (TimePassed > SpawnIntervals[CurrentSpawnIndex])
+        {
+            TimePassed = 0.0f;
+			CurrentSpawnIndex++;
+            SpawnAsteroid();
+        }
+	}
 
 	switch (GameState)
 	{
@@ -183,6 +191,40 @@ void ARawFuryTrainingGameMode::AssignRandomAbilities()
 
 		CurrentPlayerIndex = (CurrentPlayerIndex + 1) % Players.Num();
 	}
+}
+
+void ARawFuryTrainingGameMode::EnlargePool()
+{
+    FVector SpawnLocation = FVector::ZeroVector;
+    FRotator SpawnRotation = FRotator::ZeroRotator;
+
+    UWorld* CurrentWorld = GetWorld();
+    AActor* AsteroidActor = CurrentWorld->SpawnActor<AActor>(AsteroidSpawnInfo.AsteroidClassToSpawn, SpawnLocation, SpawnRotation);
+    ReturnAsteroid(AsteroidActor);
+}
+
+AActor* ARawFuryTrainingGameMode::SpawnAsteroid()
+{
+	if (AsteroidPool.Num() == 0)
+	{
+		EnlargePool();
+	}
+
+	AActor* AsteroidToSpawn = AsteroidPool.Pop();
+
+    float RandomX = FMath::FRandRange(-1000.0f, 1000.0f);
+    float RandomY = FMath::FRandRange(-1000.0f, 1000.0f);
+
+    FVector SpawnLocation = FVector(RandomX, RandomY, 0.0f);
+
+	AsteroidToSpawn->SetActorLocation(SpawnLocation);
+	return AsteroidToSpawn;
+}
+
+void ARawFuryTrainingGameMode::ReturnAsteroid(AActor* AsteroidToReturn)
+{
+	AsteroidPool.Add(AsteroidToReturn);
+	AsteroidToReturn->SetActorLocation(FVector(1000, 1000, 1000));
 }
 
 #undef LOCTEXT_NAMESPACE

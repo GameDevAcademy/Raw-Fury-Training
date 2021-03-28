@@ -30,10 +30,10 @@ struct FAsteroidSpawnInfo
 
 public:
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
-        int32 AsteroidsToSpawn = 100;
+    int32 AsteroidsToSpawn = 100;
 
     UPROPERTY(BlueprintReadWrite, EditAnywhere)
-        TSubclassOf<AActor> AsteroidClassToSpawn;
+    TSubclassOf<AActor> AsteroidClassToSpawn;
 };
 
 UCLASS(MinimalAPI)
@@ -76,8 +76,16 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = RawFury)
     FAsteroidSpawnInfo AsteroidSpawnInfo;
 
+public:
+    void EnlargePool();
+    AActor* SpawnAsteroid();
+    void ReturnAsteroid(AActor* AsteroidToReturn);
+
 private:
     TArray<AActor*> AsteroidPool;
+    TArray<int32> SpawnIntervals;
+    float TimePassed = 0.0f;
+    int32 CurrentSpawnIndex = 0;
 
 private:
     ERawFuryGameState::Type GameState = ERawFuryGameState::None;

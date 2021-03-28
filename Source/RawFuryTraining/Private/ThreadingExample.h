@@ -9,7 +9,7 @@ class ThreadingExample : public FNonAbandonableTask
 {
 public:
     // Constructor which we need to call and provide information to start the task.
-    ThreadingExample(int32 MaxPrimeNumber);
+    ThreadingExample(int32 MaxPrimeNumber, TArray<int32>& InSpawnIntervals);
 
     void DoWork();
 
@@ -20,5 +20,6 @@ public:
     }
 
 private:
+    TArray<int32>& SpawnIntervals;
     int32 UpperLimit;
 };
