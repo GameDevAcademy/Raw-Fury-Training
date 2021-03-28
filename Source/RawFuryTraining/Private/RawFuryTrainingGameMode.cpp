@@ -93,22 +93,22 @@ void ARawFuryTrainingGameMode::BeginPlay()
     }
 
     FAutoDeleteAsyncTask<ThreadingExample>* ThreadingTask = new FAutoDeleteAsyncTask<ThreadingExample>(500000, SpawnIntervals);
-    ThreadingTask->StartBackgroundTask();
+    //ThreadingTask->StartBackgroundTask();
 }
 
 void ARawFuryTrainingGameMode::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 
-	if (SpawnIntervals.Num())
+	if (SpawnIntervals.Num() != 0 && SpawnIntervals.Num() > CurrentSpawnIndex)
 	{
         TimePassed += DeltaSeconds;
 
         if (TimePassed > SpawnIntervals[CurrentSpawnIndex])
         {
-            TimePassed = 0.0f;
+			TimePassed = 0.0f;
 			CurrentSpawnIndex++;
-            SpawnAsteroid();
+			SpawnAsteroid();
         }
 	}
 

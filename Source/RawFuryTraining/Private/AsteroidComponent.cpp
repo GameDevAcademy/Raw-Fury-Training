@@ -29,7 +29,7 @@ void UAsteroidComponent::BeginPlay()
     UE_LOG(LogTemp, Warning, TEXT("My asteroid is alive."));
 
     SET_BIT(AsteroidFlags, EAsteroidFlags::WasAsteroidSpawned);
-
+    
     USphereComponent* SphereCollider = GetOwner()->FindComponentByClass<USphereComponent>();
     SphereCollider->OnComponentBeginOverlap.AddDynamic(this, &UAsteroidComponent::OnComponentOverlapBegin);
 }
