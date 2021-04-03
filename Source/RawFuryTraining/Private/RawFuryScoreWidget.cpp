@@ -23,6 +23,12 @@ void SRawFuryScoreWidget::Construct(const FArguments& InArgs)
                 .Justification(ETextJustify::Center)
                 .TextStyle(&ScoreTextStyle)
             ]
+            
+            +SHorizontalBox::Slot()
+            [
+                SNew(STextBlock)
+                .Text(NSLOCTEXT("RawFury", "None", "None"))
+            ]
 
             +SHorizontalBox::Slot()
             [
