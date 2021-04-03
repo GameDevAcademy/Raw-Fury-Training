@@ -26,12 +26,6 @@ void SRawFuryScoreWidget::Construct(const FArguments& InArgs)
             
             +SHorizontalBox::Slot()
             [
-                SNew(STextBlock)
-                .Text(NSLOCTEXT("RawFury", "None", "None"))
-            ]
-
-            +SHorizontalBox::Slot()
-            [
                 SNew(SSpacer)
             ]
         ];
